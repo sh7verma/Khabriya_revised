@@ -7,6 +7,8 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
+
+import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDexApplication;
 
 import com.google.android.gms.ads.MobileAds;
@@ -30,7 +32,7 @@ public class AppApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        MobileAds.initialize(this, "ca-app-pub-5555315701324132~6870727858");
+//        MobileAds.initialize(this, "ca-app-pub-5555315701324132~6870727858");
         MobileAds.initialize(this, initializationStatus -> Log.e("Admob","Initialized well"));
         initImageLoader(getApplicationContext());
     }

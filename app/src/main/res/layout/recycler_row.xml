@@ -45,5 +45,18 @@
             android:drawablePadding="@dimen/_4sdp"
             android:text="Share on Whatsapp"
             android:textSize="@dimen/_8ssp" />
+
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adViewNews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/whatsappShare"
+            android:background="@android:color/white"
+            ads:adSize="SMART_BANNER"
+            android:visibility="gone"
+            ads:adUnitId="ca-app-pub-5555315701324132/6726239696">
+            <!--                ads:adUnitId="ca-app-pub-5555315701324132/5557646184">-->
+        </com.google.android.gms.ads.AdView>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

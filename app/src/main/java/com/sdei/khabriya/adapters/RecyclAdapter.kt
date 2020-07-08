@@ -8,6 +8,8 @@ import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
 import androidx.cardview.widget.CardView
@@ -58,10 +60,13 @@ class RecyclAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0) {
-            0
-        } else {
-            1
+        return when (position) {
+            0 -> {
+                0
+            }
+            else -> {
+                1
+            }
         }
     }
 
@@ -121,6 +126,14 @@ class RecyclAdapter(
             var url = ""
             //        url =  data.getLink();
             if (data != null) {
+                if(position ==3 || position==5){
+                    var adRequest = AdRequest.Builder().build();
+                    (holder as NewsHolder).adView.loadAd(adRequest);
+                    (holder as NewsHolder).adView.visibility = VISIBLE
+                }else{
+                    (holder as NewsHolder).adView.visibility = GONE
+                }
+
                 url =
                     Utilities.extractLinks(data.content.rendered)
                 if (url.isEmpty()) {
@@ -184,6 +197,7 @@ class RecyclAdapter(
         var sharewhats: TextView
         var imageView: ImageView
         var card_view: CardView
+        var adView : AdView
 
         init {
             imageView =
@@ -191,6 +205,7 @@ class RecyclAdapter(
             textView = itemView.findViewById<View>(R.id.country_name) as TextView
             sharewhats = itemView.findViewById(R.id.whatsappShare)
             card_view = itemView.findViewById(R.id.card_view)
+            adView = itemView.findViewById(R.id.adViewNews)
             textView.typeface = mRegularTypeface
             val screenWidth = Utilities.getScreenWidth(mContext) / 2
             val calculatedHeight = (screenWidth / 1.56f).toInt()

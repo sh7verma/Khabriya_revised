@@ -1,6 +1,8 @@
 package com.sdei.khabriya.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
@@ -12,6 +14,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 import com.sdei.khabriya.AppApplication
 import com.sdei.khabriya.R
 import com.sdei.khabriya.adapters.MenuAdapter
@@ -30,6 +34,7 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
 
+    private lateinit var mInterstitialAd: InterstitialAd
     var mNewsList = ArrayList<NewsResponse>()
     var mSearchNewsList = ArrayList<NewsResponse>()
     var mMenuList = ArrayList<MenuResponse>()
@@ -53,7 +58,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
         getMenuList()
         getAllNews()
         initScrollListener()
-
+        showInterstitialAd()
         loadingMore.observe(this, Observer {
             if (it) {
                 progress.visibility = View.VISIBLE
@@ -74,7 +79,10 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
             mNewsList = ArrayList()
             getAllNews()
         }
-
+        settingsImg.setOnClickListener {
+            startActivity(Intent(this@MainActivity,
+                SettingActivity::class.java))
+        }
         edSearch.setOnEditorActionListener { v, actionId, event ->
             if (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
                 LIST_TYPE = 2
@@ -262,4 +270,29 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
         getAllNews()
     }
 
+
+    fun showInterstitialAd(){
+        Log.e("Test","App onForeground")
+        Handler().postDelayed({
+            Log.e("Test","App Ad")
+            mInterstitialAd = InterstitialAd(this)
+
+            // set the ad unit ID
+
+            // set the ad unit ID
+            mInterstitialAd.adUnitId = getString(R.string.interstitial_full_screen)
+
+            val adRequest =
+                AdRequest.Builder().build()
+
+            // Load ads into Interstitial Ads
+
+            // Load ads into Interstitial Ads
+            mInterstitialAd.loadAd(adRequest)
+            mInterstitialAd!!.show()
+
+        },10000
+
+        )
+    }
 }

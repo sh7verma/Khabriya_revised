@@ -172,8 +172,6 @@ public class DetailActivity extends AppCompatActivity {
         title = String.valueOf(new StringBuffer(title.toString().replaceAll("&#8217;", "'")));
         tvTitle.setText(title);
 
-        categoryTv.setText(category);
-
         postedByTv.setText(name);
 
 
