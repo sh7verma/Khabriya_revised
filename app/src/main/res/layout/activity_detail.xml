@@ -1,0 +1,355 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/topFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/floating_action_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginRight="10dp"
+                    android:clickable="true"
+                    android:src="@android:drawable/ic_menu_share"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:fabSize="normal"
+                    fab:fab_colorNormal="@color/colorPrimary" />
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="30dp"
+                    android:scaleType="centerCrop" />
+
+                <LinearLayout
+                    android:id="@+id/backTool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:gravity="top|start"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/backTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:drawableLeft="@drawable/ic_baseline_arrow_back"
+                        android:padding="17dp"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/topFrame"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+
+            <RelativeLayout
+                android:id="@+id/date_cont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title_tv"
+                android:layout_centerHorizontal="true">
+
+                <LinearLayout
+                    android:id="@+id/author_cont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Published on : "
+                        android:textColor="@color/grey"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/posted_by_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/grey"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/author_cont"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/category_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/grey"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/grey"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <WebView
+                android:id="@+id/webview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/adView1"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/disc_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/webview"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="6dp"
+                android:background="#CCFFFFFF"
+                android:ellipsize="end"
+                android:gravity="top"
+                android:lineSpacingExtra="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="This story is auto-aggregated by a computer program and has not been edited by Khabriya App."
+                android:textColor="@android:color/darker_gray"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/alsoRead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/disc_textview"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="6dp"
+                android:text="You may like"
+                android:textAllCaps="true"
+                android:textColor="@color/darkgrey"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/alsoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/alsoRead"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/black_drawable_corner"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/newsContent"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1.5"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLength="100"
+                    android:textColor="@android:color/black" />
+
+                <ImageView
+                    android:id="@+id/newsLogo"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="0.5"
+                    android:src="@drawable/splashlogo" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/alsoLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+
+                android:layout_below="@+id/alsoLayout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/black_drawable_corner"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/newsContent1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1.5"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLength="100"
+                    android:textColor="@android:color/black" />
+
+                <ImageView
+                    android:id="@+id/newsLogo1"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="0.5"
+                    android:src="@drawable/splashlogo" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/alsoLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/alsoLayout1"
+                android:visibility="gone"
+
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/black_drawable_corner"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/newsContent2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1.5"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLength="100"
+                    android:textColor="@android:color/black" />
+
+                <ImageView
+                    android:id="@+id/newsLogo2"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="0.5"
+                    android:src="@drawable/splashlogo" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/alsoLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/alsoLayout2"
+                android:visibility="gone"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="50dp"
+                android:background="@drawable/black_drawable_corner"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/newsContent4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1.5"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLength="100"
+                    android:textColor="@android:color/black" />
+
+                <ImageView
+                    android:id="@+id/newsLogo4"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="0.5"
+                    android:src="@drawable/splashlogo" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/alsoLayout4" />
+
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/date_cont"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="top"
+                ads:adSize="SMART_BANNER"
+                ads:adUnitId="ca-app-pub-5555315701324132/7739481617">
+                <!--                ads:adUnitId="ca-app-pub-5555315701324132/7739481617">-->
+            </com.google.android.gms.ads.AdView>
+
+        </RelativeLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adVieww2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="top"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="ca-app-pub-5555315701324132/7739481617">
+        <!--                ads:adUnitId="ca-app-pub-5555315701324132/7739481617">-->
+    </com.google.android.gms.ads.AdView>
+
+    <RelativeLayout
+        android:id="@+id/progress_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true">
+
+        <include layout="@layout/header" />
+
+    </LinearLayout>
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="top"
+        android:background="@android:color/white"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="ca-app-pub-5555315701324132/5557646184">
+        <!--                ads:adUnitId="ca-app-pub-5555315701324132/5557646184">-->
+    </com.google.android.gms.ads.AdView>
+
+    <TextView
+        android:id="@+id/headlinesTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/adView1"
+        android:padding="@dimen/_10sdp"
+        android:background="#CCFFFFFF"
+        android:text="Now Trending"
+        android:textColor="#000000"
+        android:textSize="@dimen/_14ssp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:background="@android:color/darker_gray" />
+
+</LinearLayout>

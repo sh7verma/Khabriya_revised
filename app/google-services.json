@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "272267775926",
+    "firebase_url": "https://khabriya-87548.firebaseio.com",
+    "project_id": "khabriya-87548",
+    "storage_bucket": "khabriya-87548.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272267775926:android:744ff5fcac5ba6bb3e3b17",
+        "android_client_info": {
+          "package_name": "com.sdei.khabriya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "272267775926-caoo9b5pdjv2oun96qk61gsfn6kifl7n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnR-XfOoZWHim1WY-bV-XEvujxuJ03k8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "272267775926-caoo9b5pdjv2oun96qk61gsfn6kifl7n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
