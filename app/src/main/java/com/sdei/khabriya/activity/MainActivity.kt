@@ -14,8 +14,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.sdei.khabriya.AppApplication
 import com.sdei.khabriya.R
 import com.sdei.khabriya.adapters.MenuAdapter
@@ -34,6 +36,7 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
 
+    private var mAdIsLoading: Boolean = true
     private lateinit var mInterstitialAd: InterstitialAd
     var mNewsList = ArrayList<NewsResponse>()
     var mSearchNewsList = ArrayList<NewsResponse>()
@@ -58,7 +61,6 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
         getMenuList()
         getAllNews()
         initScrollListener()
-        showInterstitialAd()
         loadingMore.observe(this, Observer {
             if (it) {
                 progress.visibility = View.VISIBLE
@@ -66,6 +68,11 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                 progress.visibility = View.GONE
             }
         })
+        mInterstitialAd = InterstitialAd(this)
+
+        initializeInterstitialAd("ca-app-pub-5555315701324132~6870727858")
+
+        loadInterstitialAd("ca-app-pub-5555315701324132/1665484702")
 
         imgDrawer.setOnClickListener {
             drawer.openDrawer(GravityCompat.START)
@@ -80,8 +87,12 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
             getAllNews()
         }
         settingsImg.setOnClickListener {
-            startActivity(Intent(this@MainActivity,
-                SettingActivity::class.java))
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    SettingActivity::class.java
+                )
+            )
         }
         edSearch.setOnEditorActionListener { v, actionId, event ->
             if (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
@@ -104,6 +115,15 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
             .translationY(rvSplash.height.toFloat())
             .alpha(0.0f)
             .duration = 300
+
+        runAdEvents()
+
+        Handler().postDelayed({
+            if (mInterstitialAd.isLoaded) {
+                mInterstitialAd.show()
+            }
+        },15000)
+
     }
 
 
@@ -271,28 +291,41 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
     }
 
 
-    fun showInterstitialAd(){
-        Log.e("Test","App onForeground")
-        Handler().postDelayed({
-            Log.e("Test","App Ad")
-            mInterstitialAd = InterstitialAd(this)
+    private fun initializeInterstitialAd(appUnitId: String) {
 
-            // set the ad unit ID
+        MobileAds.initialize(this, "ca-app-pub-5555315701324132~6870727858")
 
-            // set the ad unit ID
-            mInterstitialAd.adUnitId = getString(R.string.interstitial_full_screen)
-
-            val adRequest =
-                AdRequest.Builder().build()
-
-            // Load ads into Interstitial Ads
-
-            // Load ads into Interstitial Ads
-            mInterstitialAd.loadAd(adRequest)
-            mInterstitialAd!!.show()
-
-        },10000
-
-        )
     }
+
+    private fun loadInterstitialAd(interstitialAdUnitId: String) {
+
+        mInterstitialAd.adUnitId = interstitialAdUnitId
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
+    }
+
+    private fun runAdEvents() {
+
+        mInterstitialAd.adListener = object : AdListener() {
+
+            override fun onAdLoaded() {
+                super.onAdLoaded()
+                Log.i("Test",""+mInterstitialAd.isLoaded)
+
+            }
+
+
+            // If user clicks on the ad and then presses the back, s/he is directed to DetailActivity.
+            override fun onAdClicked() {
+                super.onAdOpened()
+                mInterstitialAd.adListener.onAdClosed()
+            }
+
+            // If user closes the ad, s/he is directed to DetailActivity.
+            override fun onAdClosed() {
+//                startActivity(Intent(this@MainActivity, DetailActivity::class.java))
+//                finish()
+            }
+        }
+    }
+
 }
