@@ -57,6 +57,9 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        mInterstitialAd = InterstitialAd(this)
+
         setAdapter(mNewsTitle)
         getMenuList()
         getAllNews()
@@ -68,8 +71,6 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                 progress.visibility = View.GONE
             }
         })
-        mInterstitialAd = InterstitialAd(this)
-
         initializeInterstitialAd("ca-app-pub-5555315701324132~6870727858")
 
         loadInterstitialAd("ca-app-pub-5555315701324132/1665484702")
@@ -213,7 +214,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                                     val temp = response.body() as ArrayList<NewsResponse>
                                     mNewsList.addAll(temp)
                                 } catch (e: Exception) {
-                                    showToast(getString(R.string.error_no_stories))
+                                    showToast(getString(R.string.error_no_searched_stories))
                                 }
                                 notifyAdapter()
                             }
