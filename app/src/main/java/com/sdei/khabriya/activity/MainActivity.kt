@@ -36,7 +36,6 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
 
-    private var adTime: Long=120000
     private var mAdIsLoading: Boolean = true
     private lateinit var mInterstitialAd: InterstitialAd
     var mNewsList = ArrayList<NewsResponse>()

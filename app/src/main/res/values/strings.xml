@@ -11,6 +11,7 @@
 
     <string name="error_internet">Internet Connection is not Available. Please connect to network!!</string>
     <string name="error_no_stories">No More Stories Available</string>
+    <string name="error_no_searched_stories">No Searched Stores Available</string>
     <string name="no_data_available">No Data Available!!</string>
     <string name="interstitial_full_screen">"ca-app-pub-5555315701324132/1665484702"</string>
 </resources>
