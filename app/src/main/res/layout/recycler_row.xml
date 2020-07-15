@@ -19,7 +19,7 @@
         <ImageView
             android:id="@+id/country_photo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="180dp"
             android:contentDescription="@string/action_settings"
             android:scaleType="centerCrop" />
 
@@ -32,7 +32,8 @@
             android:lineSpacingExtra="@dimen/_2ssp"
             android:padding="@dimen/_5sdp"
             android:textColor="#000"
-            android:textSize="@dimen/_10ssp" />
+            android:textStyle="bold"
+            android:textSize="@dimen/_12ssp" />
 
         <TextView
             android:id="@+id/whatsappShare"

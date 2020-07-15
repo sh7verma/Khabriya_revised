@@ -16,6 +16,8 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.onesignal.OneSignal;
+import com.sdei.khabriya.oneSignal.NotificationHandler;
 
 
 public class AppApplication extends MultiDexApplication {
@@ -35,6 +37,12 @@ public class AppApplication extends MultiDexApplication {
 //        MobileAds.initialize(this, "ca-app-pub-5555315701324132~6870727858");
         MobileAds.initialize(this, initializationStatus -> Log.e("Admob","Initialized well"));
         initImageLoader(getApplicationContext());
+        // OneSignal Initialization
+        OneSignal.startInit(this)
+                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                .unsubscribeWhenNotificationsAreDisabled(true)
+                .setNotificationOpenedHandler(new NotificationHandler(getApplicationContext()))
+                .init();
     }
 
     public static boolean hasNetwork() {

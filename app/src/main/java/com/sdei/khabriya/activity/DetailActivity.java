@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -194,13 +197,14 @@ public class DetailActivity extends AppCompatActivity {
         String outputDateStr = outputFormat.format(datedd);
         dateTv.setText(outputDateStr);
 
-        WebSettings webSettings = mWebView.getSettings();
+        showWebView(content);
+       /* WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
         mWebView.loadDataWithBaseURL(null, "<style>a{color:black; text-decoration:none}img{display: inline;width: auto; height: auto;max-width: 100%;}iframe{display: inline;height: auto;max-width: 100%;}p{line-height: 40px}@font-face {font-family: \"Lato\";src: url(\'file:///android_asset/fonts/Lato.ttf\');}</style>" + content, "text/html", "UTF-8", null);
 //        mWebView.loadData(content, "text/html", "UTF-8");
         mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        mWebView.setWebViewClient(webViewClient);
+        mWebView.setWebViewClient(webViewClient);*/
         ImageLoader.getInstance().displayImage(coverImage, ivTop, Utilities.setDisplayOptions());
     }
 
@@ -290,6 +294,54 @@ public class DetailActivity extends AppCompatActivity {
         intent.putExtra("category", category);
         intent.putExtra("name", viewModel.getAuthorName());
         startActivity(intent);
+    }
+
+
+    void showWebView(String content) {
+        mWebView.setWebChromeClient(new WebChromeClient());
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setLoadsImagesAutomatically(true);
+        mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        mWebView.getSettings().setPluginState(WebSettings.PluginState.ON);
+        mWebView.loadDataWithBaseURL(null, "<style>a{color:black; text-decoration:none}img{display: inline;width: auto; height: auto;max-width: 100%;}iframe{display: inline;height: auto;max-width: 100%;}p{line-height: 40px}@font-face {font-family: \"Lato\";src: url(\'file:///android_asset/fonts/Lato.ttf\');}</style>" + content, "text/html", "UTF-8", null);
+        mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        mWebView.setWebViewClient(new MyBrowser());
+
+    }
+
+    //inner class
+    class MyBrowser extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            view.addJavascriptInterface(new Object() {
+                @JavascriptInterface
+                public void performClick() throws Exception {
+                    Log.d("LOGIN::", "Clicked");
+                    Toast.makeText(DetailActivity.this, "Login clicked",
+                            Toast.LENGTH_LONG).show();
+                }
+            }, "login");
+            return true;
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            // TODO Auto-generated method stub
+
+            System.out.println("started");
+            super.onPageStarted(view, url, favicon);
+
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            // TODO Auto-generated method stub
+            System.out.println("ends");
+            super.onPageFinished(view, url);
+
+        }
+
     }
 }
 

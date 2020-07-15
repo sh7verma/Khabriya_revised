@@ -5,21 +5,33 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true">
 
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/rvSplash"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="@dimen/_5sdp"
         android:visibility="visible">
 
-        <ImageView
+        <ImageView android:id="@+id/splash_iv"
             android:layout_width="match_parent"
-            android:src="@drawable/splash_rev"
-             android:adjustViewBounds="true"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
             android:scaleType="fitXY"
-            android:layout_height="match_parent"/>
+            android:src="@drawable/splash_rev" />
 
-    </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Made in India"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/_12ssp"
+            android:typeface="sans"
+            android:gravity="bottom"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:textStyle="bold" />
+
+    </FrameLayout>
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer"
@@ -39,8 +51,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:elevation="@dimen/_10sdp"
-                android:weightSum="2"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="2">
 
                 <ImageView
                     android:id="@+id/imgDrawer"
@@ -67,12 +79,14 @@
                     android:singleLine="true"
                     android:textColorHint="#000000"
                     android:textSize="@dimen/_12ssp" />
-                <ImageView android:id="@+id/settingsImg"
+
+                <ImageView
+                    android:id="@+id/settingsImg"
                     android:layout_width="wrap_content"
-                    android:layout_weight="0.1"
-                    android:src="@drawable/ic_baseline_settings"
+                    android:layout_height="match_parent"
                     android:layout_margin="@dimen/_3sdp"
-                    android:layout_height="match_parent"/>
+                    android:layout_weight="0.1"
+                    android:src="@drawable/ic_baseline_settings" />
 
             </LinearLayout>
 
@@ -91,8 +105,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:layout_height="0dp">
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recycler_view"
@@ -104,10 +118,10 @@
                         <TextView
                             android:id="@+id/txtError"
                             android:layout_width="wrap_content"
-                            android:textSize="@dimen/_12sdp"
+                            android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:text="@string/no_data_available"
-                            android:layout_height="wrap_content"/>
+                            android:textSize="@dimen/_12sdp" />
 
                     </RelativeLayout>
 
@@ -160,17 +174,18 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/_3sdp"
                         android:text="Khabriya"
-                        android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/_15sdp" />
+                        android:textSize="@dimen/_15sdp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1dp"
                     android:layout_marginLeft="@dimen/_15sdp"
-                    android:background="@color/grey"
-                    android:layout_height="1dp"/>
+                    android:background="@color/grey" />
+
                 <TextView
                     android:id="@+id/txtLatest"
                     android:layout_width="match_parent"

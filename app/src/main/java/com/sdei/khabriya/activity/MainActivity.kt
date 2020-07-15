@@ -36,6 +36,7 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
 
+    private var adTime: Long=120000
     private var mAdIsLoading: Boolean = true
     private lateinit var mInterstitialAd: InterstitialAd
     var mNewsList = ArrayList<NewsResponse>()
@@ -68,11 +69,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                 progress.visibility = View.GONE
             }
         })
-        mInterstitialAd = InterstitialAd(this)
 
-        initializeInterstitialAd("ca-app-pub-5555315701324132~6870727858")
-
-        loadInterstitialAd("ca-app-pub-5555315701324132/1665484702")
 
         imgDrawer.setOnClickListener {
             drawer.openDrawer(GravityCompat.START)
@@ -103,6 +100,12 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
             false
         }
 
+        recycler_view.setOnClickListener {
+            if (mInterstitialAd.isLoaded) {
+                mInterstitialAd.show()
+            }
+        }
+
         swRefresh.setOnRefreshListener {
             getAllNews()
         }
@@ -116,13 +119,22 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
             .alpha(0.0f)
             .duration = 300
 
+        mInterstitialAd = InterstitialAd(this)
+
+        initializeInterstitialAd("ca-app-pub-5555315701324132~6870727858")
+
+        loadInterstitialAd("ca-app-pub-5555315701324132/1665484702")
+
         runAdEvents()
 
-        Handler().postDelayed({
+       /* Handler().postDelayed({
+            if(adTime<1800000){
+                adTime+=6000
+            }
             if (mInterstitialAd.isLoaded) {
                 mInterstitialAd.show()
             }
-        },15000)
+        },adTime)*/
 
     }
 

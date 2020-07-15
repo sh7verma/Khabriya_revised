@@ -1,3 +1,4 @@
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -12,7 +13,11 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
+        manifestPlaceholders = [
+                onesignal_app_id: 'ce7f04ce-9d5c-46d9-bbc0-580764b9071d',
+                // Project number pulled from dashboard, local value is ignored.
+                onesignal_google_project_number: 'REMOTE'
+        ]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -84,6 +89,11 @@ dependencies {
 
     //image picker
     implementation 'com.github.maayyaannkk:ImagePicker:1.0.4'
+
+
+    //oneSignal
+    implementation 'com.onesignal:OneSignal:[3.15.0, 3.99.99]'
+
 
     // crashlytics
 //    implementation 'com.google.firebase:firebase-analytics:17.4.3'

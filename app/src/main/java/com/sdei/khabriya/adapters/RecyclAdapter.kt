@@ -207,7 +207,7 @@ class RecyclAdapter(
             card_view = itemView.findViewById(R.id.card_view)
             adView = itemView.findViewById(R.id.adViewNews)
             textView.typeface = mRegularTypeface
-            val screenWidth = Utilities.getScreenWidth(mContext) / 2
+           /* val screenWidth = Utilities.getScreenWidth(mContext) / 2
             val calculatedHeight = (screenWidth / 1.56f).toInt()
             imageView.requestLayout()
             val layoutParams = RelativeLayout.LayoutParams(
@@ -215,7 +215,7 @@ class RecyclAdapter(
                 calculatedHeight
             )
             imageView.layoutParams = layoutParams
-            imageView.requestLayout()
+            imageView.requestLayout()*/
         }
     }
 
