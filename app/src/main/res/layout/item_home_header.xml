@@ -38,6 +38,7 @@
         android:padding="@dimen/_10sdp"
         android:background="#CCFFFFFF"
         android:text="Now Trending"
+        android:fontFamily="@font/regular"
         android:textColor="#000000"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold" />

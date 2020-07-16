@@ -54,10 +54,20 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
     // 1  Category
     // 2  Search
 
+
+    private val SPLASH_DISPLAY_LENGTH: Long = 1000
+
+    private fun startTimer() {
+        Handler().postDelayed({
+            hideSplash()
+        }, SPLASH_DISPLAY_LENGTH)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setAdapter(mNewsTitle)
+        startTimer()
         getMenuList()
         getAllNews()
         initScrollListener()
@@ -92,9 +102,15 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
         }
         edSearch.setOnEditorActionListener { v, actionId, event ->
             if (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
-                LIST_TYPE = 2
-                pageNo = 0
-                getAllNews()
+                if(edSearch.text.isNotEmpty()) {
+                    LIST_TYPE = 2
+                }else{
+                    LIST_TYPE = 0
+                }
+                    pageNo = 0
+                    mNewsList = ArrayList()
+                    getAllNews()
+
             }
             false
         }
@@ -109,6 +125,11 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
             getAllNews()
         }
         swRefresh.isRefreshing = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getAllNews()
     }
 
     fun hideSplash() {
@@ -126,14 +147,14 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
 
         runAdEvents()
 
-       /* Handler().postDelayed({
-            if(adTime<1800000){
-                adTime+=6000
-            }
-            if (mInterstitialAd.isLoaded) {
-                mInterstitialAd.show()
-            }
-        },adTime)*/
+        /* Handler().postDelayed({
+             if(adTime<1800000){
+                 adTime+=6000
+             }
+             if (mInterstitialAd.isLoaded) {
+                 mInterstitialAd.show()
+             }
+         },adTime)*/
 
     }
 
@@ -173,7 +194,6 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                                 call: Call<List<NewsResponse?>?>,
                                 response: Response<List<NewsResponse?>?>
                             ) {
-                                hideSplash()
                                 try {
                                     val temp = response.body() as ArrayList<NewsResponse>
                                     mNewsList.addAll(temp)
@@ -194,7 +214,6 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                                 call: Call<List<NewsResponse?>?>,
                                 response: Response<List<NewsResponse?>?>
                             ) {
-                                hideSplash()
                                 try {
                                     val temp = response.body() as ArrayList<NewsResponse>
                                     mNewsList.addAll(temp)
@@ -207,9 +226,8 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                 }
                 2 -> {
                     RetrofitClient.instance?.getSearch(
-                        "",
-                        pageNo.toString(),
-                        edSearch.text.toString()
+                        edSearch.text.toString(),
+                        pageNo.toString()
                     )
                         ?.enqueue(object : Callback<List<NewsResponse?>?> {
                             override fun onFailure(call: Call<List<NewsResponse?>?>, t: Throwable) {
@@ -219,7 +237,6 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                                 call: Call<List<NewsResponse?>?>,
                                 response: Response<List<NewsResponse?>?>
                             ) {
-                                hideSplash()
                                 try {
                                     val temp = response.body() as ArrayList<NewsResponse>
                                     mNewsList.addAll(temp)
@@ -232,7 +249,6 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                 }
             }
         } else {
-            hideSplash()
             showAlertSnackBar(edSearch, getString(R.string.error_internet))
             notifyAdapter()
         }
@@ -320,7 +336,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
 
             override fun onAdLoaded() {
                 super.onAdLoaded()
-                Log.i("Test",""+mInterstitialAd.isLoaded)
+                Log.i("Test", "" + mInterstitialAd.isLoaded)
 
             }
 

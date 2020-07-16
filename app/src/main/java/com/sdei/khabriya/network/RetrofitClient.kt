@@ -7,7 +7,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
-    const val BASE_URL = "https://app.pagalparrot.com/wp-json/wp/v2/"
+//    const val BASE_URL = "https://app.pagalparrot.com/wp-json/wp/v2/"
+    const val BASE_URL = "https://news.khabriya.in/wp-json/wp/v2/"
     private var retrofit: Retrofit? = null
     private var apiInterface: ApiInterface? = null
 

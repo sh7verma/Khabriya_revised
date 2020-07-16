@@ -14,4 +14,5 @@
     <string name="error_no_searched_stories">No Searched Stores Available</string>
     <string name="no_data_available">No Data Available!!</string>
     <string name="interstitial_full_screen">"ca-app-pub-5555315701324132/1665484702"</string>
+    <string name="latest_news">Latest News</string>
 </resources>

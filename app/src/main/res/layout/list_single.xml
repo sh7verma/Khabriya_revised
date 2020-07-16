@@ -13,6 +13,7 @@
         android:layout_marginLeft="@dimen/_6sdp"
         android:layout_marginTop="@dimen/_3sdp"
         android:layout_marginBottom="@dimen/_3sdp"
+        android:fontFamily="@font/regular"
         android:gravity="center_vertical"
         android:padding="@dimen/_3sdp"
         android:textColor="@android:color/white"
