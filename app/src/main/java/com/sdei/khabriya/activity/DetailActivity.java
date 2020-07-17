@@ -14,10 +14,12 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -48,11 +50,12 @@ public class DetailActivity extends AppCompatActivity {
     private com.sdei.khabriya.models.ViewModel model;
     private String finalUrl = "";
     private TextView backTv;
-    private LinearLayout mToolBar;
+    private RelativeLayout mToolBar;
     private LinearLayout alsoLayout, alsoLayout1, alsoLayout2, alsoLayout4;
     private TextView newsContent, newsContent1, newsContent2, newsContent4;
     private ImageView newsLogo, newsLogo1, newsLogo2, newsLogo4;
-    private FloatingActionButton mActionButton;
+    private FloatingActionButton mActionButton, scrollTop;
+    private NestedScrollView mNestedScrollView;
     private String category = "", categoryCode = "";
     private ImageView ivTop;
     private WebView mWebView;
@@ -91,6 +94,16 @@ public class DetailActivity extends AppCompatActivity {
         newsLogo1 = findViewById(R.id.newsLogo1);
         newsLogo2 = findViewById(R.id.newsLogo2);
         newsLogo4 = findViewById(R.id.newsLogo4);
+        scrollTop = findViewById(R.id.scrollTop);
+        mNestedScrollView = findViewById(R.id.scroll);
+
+
+        scrollTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mNestedScrollView.fullScroll(View.FOCUS_UP);
+            }
+        });
 
         category = getIntent().getStringExtra("category");
         getCategoryNews(category);
@@ -303,6 +316,7 @@ public class DetailActivity extends AppCompatActivity {
         intent.putExtra("category", category);
         intent.putExtra("name", viewModel.getAuthorName());
         startActivity(intent);
+        finish();
     }
 
 
@@ -312,7 +326,7 @@ public class DetailActivity extends AppCompatActivity {
         mWebView.getSettings().setLoadsImagesAutomatically(true);
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         mWebView.getSettings().setPluginState(WebSettings.PluginState.ON);
-        mWebView.loadDataWithBaseURL(null, "<style>a{color:black; text-decoration:none}img{display: inline;width: auto; height: auto;max-width: 100%;}iframe{display: inline;height: auto;max-width: 100%;}p{line-height: 40px}@font-face {font-family: \"Lato\";src: url(\'file:///android_asset/fonts/Lato.ttf\');}</style>" + content, "text/html", "UTF-8", null);
+        mWebView.loadDataWithBaseURL(null, "<style>a{color:black; text-decoration:none}img{display: inline;width: auto; height: auto;max-width: 100%;}iframe{display: inline;height: auto;max-width: 100%;}p{line-height: 25px}@font-face {font-family: \"regular\";src: url(\'file:///android_asset/fonts/regular.ttf\');}</style>" + content, "text/html", "UTF-8", null);
         mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         mWebView.setWebViewClient(new MyBrowser());
 

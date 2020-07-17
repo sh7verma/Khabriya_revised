@@ -19,15 +19,16 @@
         <ImageView
             android:id="@+id/country_photo"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:contentDescription="@string/action_settings"
-            android:scaleType="centerCrop" />
+            android:layout_height="@dimen/_150sdp"
+            android:background="@color/grey"
+            android:contentDescription="@string/action_settings" />
 
         <TextView
             android:id="@+id/country_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/country_photo"
+            android:fontFamily="@font/regular"
             android:layout_marginTop="@dimen/_1sdp"
             android:lineSpacingExtra="@dimen/_2ssp"
             android:padding="@dimen/_5sdp"
@@ -42,6 +43,8 @@
             android:layout_below="@+id/country_name"
             android:layout_margin="@dimen/_5sdp"
             android:gravity="center"
+            android:fontFamily="@font/regular"
+
             android:drawableRight="@drawable/ic_whatapp"
             android:drawablePadding="@dimen/_4sdp"
             android:text="Share on Whatsapp"

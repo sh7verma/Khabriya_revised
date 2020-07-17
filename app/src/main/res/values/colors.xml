@@ -8,5 +8,6 @@
     <color name="black">#000000</color>
     <color name="grey">#9f9f9f</color>
     <color name="darkgrey">#706C6C</color>
+    <color name="appColorTransparent">#22842FB1</color>
 
 </resources>

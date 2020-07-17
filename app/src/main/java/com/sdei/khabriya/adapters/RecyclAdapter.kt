@@ -79,9 +79,9 @@ class RecyclAdapter(
             var url = ""
             //        url =  data.getLink();
             url = Utilities.extractLinks(data.content.rendered)
-            if (url.isEmpty()) {
-                holder.imageView.visibility = View.GONE
-            } else {
+//            if (url.isEmpty()) {
+//                holder.imageView.visibility = View.GONE
+//            } else {
                 holder.imageView.visibility = View.VISIBLE
 
                 holder.imageView.loadImage(url)
@@ -91,7 +91,7 @@ class RecyclAdapter(
 //                    holder.imageView,
 //                    Utilities.setDisplayOptions()
 //                )
-            }
+//            }
             if (categoryName.isEmpty()) {
                 holder.category.text = "English News"
             } else {
@@ -179,7 +179,7 @@ class RecyclAdapter(
     }
 
     fun openDetailActivity(viewModel: ViewModel?) {
-        var intent = Intent(mContext, DetailActivity::class.java)
+        val intent = Intent(mContext, DetailActivity::class.java)
         intent.putExtra(Utilities.EXTRA_COVER_IMAGE, viewModel?.getImage());
         intent.putExtra(Utilities.TITLE, viewModel?.getTitle());
         intent.putExtra(Utilities.EXTRA_LINK, viewModel?.getLink());
@@ -189,6 +189,7 @@ class RecyclAdapter(
         intent.putExtra("category", category);
         intent.putExtra("name", viewModel?.getAuthorName());
         mContext.startActivity(intent);
+
     }
 
     protected inner class NewsHolder(itemView: View) :
