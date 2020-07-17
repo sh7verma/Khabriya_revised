@@ -8,6 +8,7 @@ import android.util.Log
 import com.onesignal.OSNotificationAction.ActionType
 import com.onesignal.OSNotificationOpenResult
 import com.onesignal.OneSignal.NotificationOpenedHandler
+import com.sdei.khabriya.activity.DetailActivity
 import com.sdei.khabriya.activity.MainActivity
 
 
@@ -35,7 +36,8 @@ internal class NotificationHandler(var context: Context) : NotificationOpenedHan
         )
 
         var intent = Intent(
-            context, MainActivity::class.java)
+            context, DetailActivity::class.java)
+        intent.putExtra("notification","")
         intent.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_REORDER_TO_FRONT
             context.startActivity(intent);
 

@@ -97,7 +97,12 @@ public class DetailActivity extends AppCompatActivity {
         backTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                if(getIntent().hasExtra("notification")){
+                    startActivity(new Intent(DetailActivity.this,MainActivity.class));
+                    finish();
+                }else{
+                    onBackPressed();
+                }
             }
         });
         alsoLayout.setOnClickListener(new View.OnClickListener() {
@@ -197,7 +202,11 @@ public class DetailActivity extends AppCompatActivity {
         String outputDateStr = outputFormat.format(datedd);
         dateTv.setText(outputDateStr);
 
-        showWebView(content);
+        if(getIntent().hasExtra("notification")){
+            showWebView(getIntent().getStringExtra("notification"));
+        }else{
+            showWebView(content);
+        }
        /* WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
