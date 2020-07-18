@@ -37,7 +37,9 @@ internal class NotificationHandler(var context: Context) : NotificationOpenedHan
 
         var intent = Intent(
             context, DetailActivity::class.java)
-        intent.putExtra("notification","")
+        intent.putExtra("notification",result.notification.payload.toJSONObject().getString("launchURL"))
+//        intent.putExtra("category",result.notification.payload.toJSONObject().getString("category"))
+        intent.putExtra("category","3")
         intent.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_REORDER_TO_FRONT
             context.startActivity(intent);
 

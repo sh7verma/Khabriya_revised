@@ -190,33 +190,39 @@ public class DetailActivity extends AppCompatActivity {
     void loadContent(String link, String coverImage, String title, String content, String date, String category, String name) {
 
         ImageLoader.getInstance().displayImage(coverImage, ivTop, Utilities.setDisplayOptions());
-        title = String.valueOf(new StringBuffer(title.toString().replaceAll("&#8217;", "'")));
-        tvTitle.setText(title);
-
-        postedByTv.setText(name);
-
+        if(title!=null){
+            title = String.valueOf(new StringBuffer(title.replaceAll("&#8217;", "'")));
+            tvTitle.setText(title);
+        }
+       if(name!=null){
+           postedByTv.setText(name);
+       }
 
         //Adview
         AdRequest adRequest = new AdRequest.Builder().build();
         adView1.loadAd(adRequest);
 
-
-        String[] dateValue = date.split("T");
-        String dateString = dateValue[0];
-
-        DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-        DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
-        Date datedd = null;
-        try {
-            datedd = inputFormat.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(date!=null){
+            String[] dateValue = date.split("T");
+            String dateString = dateValue[0];
+            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
+            Date datedd = null;
+            try {
+                datedd = inputFormat.parse(dateString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String outputDateStr = outputFormat.format(datedd);
+            dateTv.setText(outputDateStr);
         }
-        String outputDateStr = outputFormat.format(datedd);
-        dateTv.setText(outputDateStr);
+
+
+
 
         if(getIntent().hasExtra("notification")){
             showWebView(getIntent().getStringExtra("notification"));
+            getCategoryNews(getIntent().getStringExtra("category"));
         }else{
             showWebView(content);
         }
@@ -326,7 +332,11 @@ public class DetailActivity extends AppCompatActivity {
         mWebView.getSettings().setLoadsImagesAutomatically(true);
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         mWebView.getSettings().setPluginState(WebSettings.PluginState.ON);
-        mWebView.loadDataWithBaseURL(null, "<style>a{color:black; text-decoration:none}img{display: inline;width: auto; height: auto;max-width: 100%;}iframe{display: inline;height: auto;max-width: 100%;}p{line-height: 25px}@font-face {font-family: \"regular\";src: url(\'file:///android_asset/fonts/regular.ttf\');}</style>" + content, "text/html", "UTF-8", null);
+        if(getIntent().hasExtra("notification")){
+            mWebView.loadUrl(getIntent().getStringExtra("notification"));
+        }else{
+            mWebView.loadDataWithBaseURL(null, "<style>a{color:black; text-decoration:none}img{display: inline;width: auto; height: auto;max-width: 100%;}iframe{display: inline;height: auto;max-width: 100%;}p{line-height: 25px}@font-face {font-family: \"regular\";src: url(\'file:///android_asset/fonts/regular.ttf\');}</style>" + content, "text/html", "UTF-8", null);
+        }
         mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         mWebView.setWebViewClient(new MyBrowser());
 
