@@ -75,6 +75,7 @@
                 <ImageView
                     android:id="@+id/image"
                     android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_minus5sdp"
                     android:layout_height="@dimen/_180sdp"
                     android:layout_marginBottom="@dimen/_20sdp" />
 
@@ -114,9 +115,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/regular"
-                        android:text="Published on : "
+                        android:text="Published on :"
                         android:textColor="@color/grey"
-                        android:textSize="12dp" />
+                        android:textSize="@dimen/_10ssp" />
 
                     <TextView
                         android:id="@+id/posted_by_tv"
@@ -124,7 +125,17 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/regular"
                         android:textColor="@color/grey"
-                        android:textSize="12dp" />
+                        android:textSize="@dimen/_10ssp" />
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/regular"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_10ssp" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -143,15 +154,15 @@
                         android:textColor="@color/grey"
                         android:textSize="12dp" />
 
-                    <TextView
-                        android:id="@+id/date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:fontFamily="@font/regular"
-                        android:textColor="@color/grey"
-                        android:textSize="12dp" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/date"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_centerVertical="true"-->
+<!--                        android:layout_marginLeft="10dp"-->
+<!--                        android:fontFamily="@font/regular"-->
+<!--                        android:textColor="@color/grey"-->
+<!--                        android:textSize="12dp" />-->
                 </LinearLayout>
 
 
@@ -161,6 +172,7 @@
                 android:id="@+id/webview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="false"
                 android:layout_below="@+id/adView1"
                 android:layout_marginTop="10dp" />
 
@@ -373,6 +385,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="@dimen/_5sdp"
+        android:visibility="gone"
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_65sdp"
         android:clickable="true"

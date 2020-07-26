@@ -3,6 +3,8 @@ package com.sdei.khabriya.activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
@@ -29,6 +31,7 @@ import com.sdei.khabriya.utils.Utilities
 import com.sdei.khabriya.utils.showAlertSnackBar
 import com.sdei.khabriya.utils.showToast
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.progress
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
     var LIST_TYPE = 0
     // 0  Latest news
     // 1  Category
-    // 2  Search
+    // 2  Search/
 
 
     private val SPLASH_DISPLAY_LENGTH: Long = 1000
@@ -71,14 +74,18 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
         getMenuList()
         getAllNews()
         initScrollListener()
+
         loadingMore.observe(this, Observer {
             if (it) {
-                progress.visibility = View.VISIBLE
+                if (pageNo > 1) {
+                    progress.visibility = View.VISIBLE
+                } else {
+                    progress.visibility = View.GONE
+                }
             } else {
                 progress.visibility = View.GONE
             }
         })
-
 
         imgDrawer.setOnClickListener {
             drawer.openDrawer(GravityCompat.START)
@@ -90,8 +97,17 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
             pageNo = 0
             mNewsTitle = txtLatest.text.toString()
             mNewsList = ArrayList()
+            swRefresh.isRefreshing = true
+
             getAllNews()
         }
+
+        llLiveTv.setOnClickListener {
+            var intent = Intent(this, SelectLanguageTvActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         settingsImg.setOnClickListener {
             startActivity(
                 Intent(
@@ -100,21 +116,46 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                 )
             )
         }
+
         edSearch.setOnEditorActionListener { v, actionId, event ->
             if (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
-                if(edSearch.text.isNotEmpty()) {
+                if (edSearch.text.isNotEmpty()) {
                     LIST_TYPE = 2
-                }else{
+                } else {
                     LIST_TYPE = 0
                 }
-                    pageNo = 0
-                    mNewsList = ArrayList()
-                    getAllNews()
-
+                pageNo = 0
+                mNewsList = ArrayList()
+                swRefresh.isRefreshing = true
+                getAllNews()
             }
             false
         }
 
+
+        edSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(
+                s: CharSequence?, start: Int,
+                before: Int, count: Int
+            ) {
+                if (count == 0) {
+                    LIST_TYPE = 0
+                    pageNo = 0
+                    swRefresh.isRefreshing = true
+
+                    mNewsList = ArrayList()
+                    getAllNews()
+                }
+            }
+        })
         recycler_view.setOnClickListener {
             if (mInterstitialAd.isLoaded) {
                 mInterstitialAd.show()
@@ -122,6 +163,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
         }
 
         swRefresh.setOnRefreshListener {
+            getMenuList()
             getAllNews()
         }
         swRefresh.isRefreshing = false
@@ -130,6 +172,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
     override fun onResume() {
         super.onResume()
         getAllNews()
+        getMenuList()
     }
 
     fun hideSplash() {
@@ -144,7 +187,6 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
         initializeInterstitialAd("ca-app-pub-5555315701324132~6870727858")
 
         loadInterstitialAd("ca-app-pub-5555315701324132/1665484702")
-
         runAdEvents()
 
         /* Handler().postDelayed({
@@ -183,8 +225,14 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
     private fun getAllNews() {
         if (AppApplication.hasNetwork()) {
             pageNo += 1
+            if (pageNo <= 1) {
+                progress.visibility = View.GONE
+            } else {
+                progress.visibility = View.VISIBLE
+            }
             when (LIST_TYPE) {
                 0 -> {
+                    txtSearchTitle.visibility = View.GONE
                     RetrofitClient.instance?.getAllNews("true", pageNo.toString())
                         ?.enqueue(object : Callback<List<NewsResponse?>?> {
                             override fun onFailure(call: Call<List<NewsResponse?>?>, t: Throwable) {
@@ -205,6 +253,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                         })
                 }
                 1 -> {
+                    txtSearchTitle.visibility = View.GONE
                     RetrofitClient.instance?.getData("", pageNo.toString(), mCategory_id)
                         ?.enqueue(object : Callback<List<NewsResponse?>?> {
                             override fun onFailure(call: Call<List<NewsResponse?>?>, t: Throwable) {
@@ -225,6 +274,9 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                         })
                 }
                 2 -> {
+                    txtSearchTitle.visibility = View.VISIBLE
+                    txtSearchTitle.text = "Search Result for '" + edSearch.text.toString() + "'"
+
                     RetrofitClient.instance?.getSearch(
                         edSearch.text.toString(),
                         pageNo.toString()
@@ -296,8 +348,10 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
         adapter!!.notifyAdapter(mNewsList, mNewsTitle, mNewsTitle)
         loadingMore.value = false
         if (mNewsList.size == 0) {
+            txtError.text = resources.getString(R.string.no_data_available)
             txtError.visibility = View.VISIBLE
         } else {
+            txtError.text = resources.getString(R.string.loading)
             txtError.visibility = View.GONE
         }
     }
@@ -311,6 +365,8 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
         drawer.closeDrawer(Gravity.LEFT)
         LIST_TYPE = 1
         pageNo = 0
+        swRefresh.isRefreshing = true
+
         mCategory_id = mMenuList[pos].object_id
         mNewsTitle = mMenuList[pos].title
         mNewsList = ArrayList()
