@@ -102,6 +102,7 @@ dependencies {
 //    // push notification
 //    implementation 'com.google.firebase:firebase-messaging:20.2.1'
 
+
     implementation 'com.github.HamidrezaAmz:MagicalExoPlayer:1.0.15'
     //admob
     implementation 'com.google.android.gms:play-services-ads:19.2.0'

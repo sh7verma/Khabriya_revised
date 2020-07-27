@@ -359,14 +359,14 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
-            view.addJavascriptInterface(new Object() {
+           /* view.addJavascriptInterface(new Object() {
                 @JavascriptInterface
                 public void performClick() throws Exception {
                     Log.d("LOGIN::", "Clicked");
                     Toast.makeText(DetailActivity.this, "Login clicked",
                             Toast.LENGTH_LONG).show();
                 }
-            }, "login");
+            }, "login");*/
             return true;
         }
 

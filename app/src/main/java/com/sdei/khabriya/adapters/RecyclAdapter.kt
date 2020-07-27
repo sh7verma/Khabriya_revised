@@ -221,7 +221,10 @@ class RecyclAdapter(
     }
 
     fun shareWhatsApp(message: String?) {
-        val html = Html.fromHtml(message).toString()
+//        val html = Html.fromHtml("Download app on your phone for latest news in your language :  <a>https://khabriya.in</a>").toString()
+        val html = Html.fromHtml(
+            "I found this news on khabriya app :$message\n Download Khabriya app to read the latest news in your language."
+             )
         val whatsappIntent = Intent(Intent.ACTION_SEND)
         whatsappIntent.type = "text/html"
         whatsappIntent.setPackage("com.whatsapp")
