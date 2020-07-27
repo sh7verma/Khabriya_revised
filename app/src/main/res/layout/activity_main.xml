@@ -5,38 +5,6 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true">
 
-    <RelativeLayout
-        android:id="@+id/rvSplash"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:elevation="@dimen/_5sdp"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/splash_iv"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="@dimen/_150sdp"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true"
-            android:src="@drawable/new_splas" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/splash_iv"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_50sdp"
-            android:fontFamily="@font/bold"
-            android:gravity="bottom"
-            android:text="Made in India"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"
-            android:typeface="sans" />
-
-    </RelativeLayout>
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer"
@@ -96,6 +64,7 @@
                     android:id="@+id/settingsImg"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:padding="@dimen/_5sdp"
                     android:layout_marginStart="@dimen/_3sdp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_marginEnd="@dimen/_3sdp"
@@ -161,52 +130,7 @@
                         android:visibility="gone" />
 
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorPrimaryDark"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:id="@+id/llNews"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center">
-
-                            <TextView
-                                android:id="@+id/txtNews"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:padding="@dimen/_10sdp"
-                                android:text="News"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_12ssp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/llLiveTv"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center">
-
-                            <TextView
-                                android:id="@+id/txtLiveTV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:padding="@dimen/_10sdp"
-                                android:text="Live TV"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_12ssp" />
-                        </LinearLayout>
-                    </LinearLayout>
-
+                    <include layout="@layout/layout_bottom" />
                 </LinearLayout>
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

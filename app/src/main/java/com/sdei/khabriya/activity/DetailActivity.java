@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -97,6 +98,12 @@ public class DetailActivity extends AppCompatActivity {
         scrollTop = findViewById(R.id.scrollTop);
         mNestedScrollView = findViewById(R.id.scroll);
 
+        mWebView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
 
         scrollTop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,12 +177,16 @@ public class DetailActivity extends AppCompatActivity {
         category = getIntent().getStringExtra("category");
         String name = getIntent().getStringExtra("name");
         loadContent(link, coverImage, title, content, date, category, name);
+
+
+        String shareText="Download app on your phone for latest news in your language : https://khabriya.in";
+
         mActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (Utilities.isConnectingToInternet(DetailActivity.this)) {
                     Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                     sharingIntent.setType("text/*");
-                    sharingIntent.putExtra(Intent.EXTRA_TEXT, link);
+                    sharingIntent.putExtra(Intent.EXTRA_TEXT, shareText);
                     startActivity(Intent.createChooser(sharingIntent, "Share via"));
                 }
             }
@@ -328,8 +339,9 @@ public class DetailActivity extends AppCompatActivity {
 
     void showWebView(String content) {
         mWebView.setWebChromeClient(new WebChromeClient());
-        mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setLoadsImagesAutomatically(true);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setDomStorageEnabled(true);
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         mWebView.getSettings().setPluginState(WebSettings.PluginState.ON);
         if(getIntent().hasExtra("notification")){

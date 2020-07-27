@@ -12,6 +12,7 @@ import com.sdei.khabriya.models.tv.ChannelModel
 import com.sdei.khabriya.network.RetrofitClient
 import com.sdei.khabriya.utils.showAlertSnackBar
 import kotlinx.android.synthetic.main.activity_channel_list.*
+import kotlinx.android.synthetic.main.layout_bottom.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +25,22 @@ class ChannelListActivity : AppCompatActivity(), ChannelAdapter.AdapterClick {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_channel_list)
         getChannelList()
+
+        llNews.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        backTv.setOnClickListener {
+            finish()
+        }
+
+        swRefresh.setOnRefreshListener {
+            getChannelList()
+        }
+
+
     }
 
     private fun getChannelList() {
@@ -34,7 +51,7 @@ class ChannelListActivity : AppCompatActivity(), ChannelAdapter.AdapterClick {
                     override fun onFailure(call: Call<ArrayList<ChannelModel>>, t: Throwable) {
                         progress.visibility = View.GONE
                         setAdapter()
-
+                        swRefresh.isRefreshing = false
                     }
 
                     override fun onResponse(
@@ -42,7 +59,7 @@ class ChannelListActivity : AppCompatActivity(), ChannelAdapter.AdapterClick {
                         response: Response<ArrayList<ChannelModel>>
                     ) {
                         progress.visibility = View.GONE
-
+                        swRefresh.isRefreshing = false
                         mList = response.body()!!
                         setAdapter()
                     }

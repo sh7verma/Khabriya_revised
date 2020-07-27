@@ -14,7 +14,12 @@ class TvStreamingActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_tv_streaming)
 
+        backTv.setOnClickListener {
+            finish()
+        }
         andExoPlayerView.setSource(intent.getStringExtra("url"))
         andExoPlayerView.setShowFullScreen(true)
+
     }
+
 }

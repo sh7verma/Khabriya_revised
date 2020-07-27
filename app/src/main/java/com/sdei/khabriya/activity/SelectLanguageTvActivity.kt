@@ -11,9 +11,11 @@ import com.sdei.khabriya.adapters.TvLanguageAdapter
 import com.sdei.khabriya.models.tv.TvLanguageModel
 import com.sdei.khabriya.network.RetrofitClient
 import com.sdei.khabriya.utils.showAlertSnackBar
-import kotlinx.android.synthetic.main.activity_channel_list.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_select_language_tv.*
 import kotlinx.android.synthetic.main.activity_select_language_tv.progress
+import kotlinx.android.synthetic.main.activity_select_language_tv.swRefresh
+import kotlinx.android.synthetic.main.layout_bottom.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,11 +30,19 @@ class SelectLanguageTvActivity : AppCompatActivity(), TvLanguageAdapter.AdapterC
         getLanguageList()
 
         llNews.setOnClickListener {
-            var intent=Intent(this,MainActivity::class.java)
+            var intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
 
+        backTv.setOnClickListener {
+            var intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        swRefresh.setOnRefreshListener {
+            getLanguageList()
+        }
     }
 
     private fun getLanguageList() {
@@ -43,7 +53,7 @@ class SelectLanguageTvActivity : AppCompatActivity(), TvLanguageAdapter.AdapterC
                 ?.enqueue(object : Callback<ArrayList<TvLanguageModel>> {
                     override fun onFailure(call: Call<ArrayList<TvLanguageModel>>, t: Throwable) {
                         progress.visibility = View.GONE
-
+                        swRefresh.isRefreshing=false
                     }
 
                     override fun onResponse(
@@ -51,7 +61,7 @@ class SelectLanguageTvActivity : AppCompatActivity(), TvLanguageAdapter.AdapterC
                         response: Response<ArrayList<TvLanguageModel>>
                     ) {
                         progress.visibility = View.GONE
-
+                        swRefresh.isRefreshing=false
                         mLanguageList = response.body()!!
                         setAdapter()
                     }

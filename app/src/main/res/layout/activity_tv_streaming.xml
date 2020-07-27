@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/black"
     tools:context=".activity.TvStreamingActivity">
+
 
 
     <com.potyvideo.library.AndExoPlayerView
         android:id="@+id/andExoPlayerView"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/black"
         app:andexo_full_screen="true"
         app:andexo_play_when_ready="true"
-        app:andexo_show_controller="true"
         app:andexo_resize_mode="Fit"
-        android:layout_height="match_parent" />
+        app:andexo_show_controller="true" />
+
+
+    <TextView
+        android:id="@+id/backTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="@dimen/_5sdp"
+        android:drawableLeft="@drawable/ic_baseline_arrow_back"
+        android:fontFamily="@font/regular"
+        android:padding="@dimen/_8sdp"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/_12ssp"
+        android:visibility="visible" />
 
 </RelativeLayout>

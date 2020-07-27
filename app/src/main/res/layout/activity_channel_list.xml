@@ -2,68 +2,116 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.SelectLanguageTvActivity">
+
+    <RelativeLayout
+        android:id="@+id/backTool"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/backTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="@dimen/_5sdp"
+            android:drawableLeft="@drawable/ic_baseline_arrow_back"
+            android:fontFamily="@font/regular"
+            android:padding="@dimen/_8sdp"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="visible" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_5sdp"
+            android:fontFamily="@font/bold"
+            android:gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:text="@string/app_name"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/_15ssp"
+            android:visibility="visible" />
+    </RelativeLayout>
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_14ssp"
-        android:gravity="center_vertical"
-        android:drawablePadding="@dimen/_5sdp"
         android:layout_margin="@dimen/_5sdp"
-        android:textColor="@color/colorPrimaryDark"
+        android:drawableLeft="@mipmap/logo"
+        android:drawablePadding="@dimen/_5sdp"
         android:fontFamily="@font/regular"
+        android:gravity="center_vertical"
         android:text="@string/watch_live_tv"
-        android:drawableLeft="@mipmap/logo"/>
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/_14ssp" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/_5sdp"
         android:layout_height="@dimen/_2sdp"
-        android:background="@color/colorPrimaryDark"/>
+        android:layout_margin="@dimen/_5sdp"
+        android:background="@color/colorPrimaryDark" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_14ssp"
-        android:gravity="center_vertical"
-        android:fontFamily="@font/regular"
         android:layout_margin="@dimen/_10sdp"
+        android:fontFamily="@font/regular"
+        android:gravity="center_vertical"
+        android:text="Select Channel to Play"
         android:textColor="@color/colorPrimaryDark"
-        android:text="Select Channel to Play"/>
+        android:textSize="@dimen/_14ssp" />
 
-    <RelativeLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swRefresh"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvChannelList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            android:visibility="visible"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:padding="@dimen/_10sdp" />
-
-        <TextView
-            android:id="@+id/txtNoData"
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="No Channel Available For this Language Yet!"
-            android:fontFamily="@font/regular"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:textSize="@dimen/_12ssp"
-            android:padding="@dimen/_10sdp" />
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvChannelList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/txtNoData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:fontFamily="@font/regular"
+                android:padding="@dimen/_10sdp"
+                android:text="No Channel Available For this Language Yet!"
+                android:textSize="@dimen/_12ssp"
+                android:visibility="gone" />
+
+
+        </RelativeLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/layout_bottom" />
 
 </LinearLayout>

@@ -6,6 +6,40 @@
     android:orientation="vertical"
     tools:context=".activity.SelectLanguageTvActivity">
 
+    <RelativeLayout
+        android:id="@+id/backTool"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/backTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="@dimen/_5sdp"
+            android:drawableLeft="@drawable/ic_baseline_arrow_back"
+            android:fontFamily="@font/regular"
+            android:padding="@dimen/_8sdp"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="visible" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_5sdp"
+            android:fontFamily="@font/bold"
+            android:gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:text="@string/app_name"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/_15ssp"
+            android:visibility="visible" />
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -35,82 +69,44 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/_14ssp" />
 
-    <RelativeLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swRefresh"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvTvLanguage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:padding="@dimen/_10sdp"
-            android:visibility="visible" />
-
-        <TextView
-            android:id="@+id/txtNoData"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:fontFamily="@font/regular"
-            android:padding="@dimen/_10sdp"
-            android:visibility="gone" />
+            android:layout_weight="1">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTvLanguage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/llNews"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:visibility="visible" />
 
             <TextView
-                android:id="@+id/txtNews"
+                android:id="@+id/txtNoData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:fontFamily="@font/regular"
                 android:padding="@dimen/_10sdp"
-                android:text="News"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12ssp" />
+                android:visibility="gone" />
 
-        </LinearLayout>
+        </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <include layout="@layout/layout_bottom" />
 
-        <LinearLayout
-            android:id="@+id/llLiveTv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/txtLiveTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:padding="@dimen/_10sdp"
-                android:text="Live TV"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12ssp" />
-        </LinearLayout>
-    </LinearLayout>
 
 </LinearLayout>

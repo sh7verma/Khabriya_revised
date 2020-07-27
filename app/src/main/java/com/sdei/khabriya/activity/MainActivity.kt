@@ -32,6 +32,7 @@ import com.sdei.khabriya.utils.showAlertSnackBar
 import com.sdei.khabriya.utils.showToast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.progress
+import kotlinx.android.synthetic.main.layout_bottom.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -57,20 +58,10 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
     // 1  Category
     // 2  Search/
 
-
-    private val SPLASH_DISPLAY_LENGTH: Long = 1000
-
-    private fun startTimer() {
-        Handler().postDelayed({
-            hideSplash()
-        }, SPLASH_DISPLAY_LENGTH)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setAdapter(mNewsTitle)
-        startTimer()
         getMenuList()
         getAllNews()
         initScrollListener()
@@ -169,19 +160,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
         swRefresh.isRefreshing = false
     }
 
-    override fun onResume() {
-        super.onResume()
-        getAllNews()
-        getMenuList()
-    }
-
-    fun hideSplash() {
-        rvSplash.visibility = View.GONE
-        rvSplash.animate()
-            .translationY(rvSplash.height.toFloat())
-            .alpha(0.0f)
-            .duration = 300
-
+    private fun hideSplash() {
         mInterstitialAd = InterstitialAd(this)
 
         initializeInterstitialAd("ca-app-pub-5555315701324132~6870727858")
