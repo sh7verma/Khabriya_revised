@@ -50,14 +50,11 @@ class ChannelListActivity : AppCompatActivity(), ChannelAdapter.AdapterClick {
                 ?.enqueue(object : Callback<ArrayList<ChannelModel>> {
                     override fun onFailure(call: Call<ArrayList<ChannelModel>>, t: Throwable) {
                         progress.visibility = View.GONE
-                        setAdapter()
                         swRefresh.isRefreshing = false
+                        setAdapter()
                     }
 
-                    override fun onResponse(
-                        call: Call<ArrayList<ChannelModel>>,
-                        response: Response<ArrayList<ChannelModel>>
-                    ) {
+                    override fun onResponse(call: Call<ArrayList<ChannelModel>>,response: Response<ArrayList<ChannelModel>> ) {
                         progress.visibility = View.GONE
                         swRefresh.isRefreshing = false
                         mList = response.body()!!
