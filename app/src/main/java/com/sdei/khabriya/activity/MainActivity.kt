@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
     var LIST_TYPE = 0
     // 0  Latest news
     // 1  Category
-    // 2  Search/
+    // 2  Search
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
