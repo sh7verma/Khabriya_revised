@@ -2,6 +2,7 @@ package com.sdei.khabriya.network
 
 import com.sdei.khabriya.models.MenuResponse
 import com.sdei.khabriya.models.news.NewsResponse
+import com.sdei.khabriya.models.preference.MenuPreferenceResponse
 import com.sdei.khabriya.models.tv.ChannelModel
 import com.sdei.khabriya.models.tv.TvLanguageModel
 import retrofit2.Call
@@ -28,6 +29,12 @@ interface ApiInterface {
     @Headers("Content-Type: application/json")
     @GET("https://news.khabriya.in/wp-json/menus/v1/menus/5")
     fun getMenu(): Call<ArrayList<MenuResponse>>
+
+
+    @Headers("Content-Type: application/json")
+    @GET("https://news.khabriya.in/wp-json/menus/v1/menus/5")
+    fun getPreferenceMenu(): Call<ArrayList<MenuPreferenceResponse?>>
+
 
     @GET("https://news.khabriya.in/wp-json/wp/v2/posts")
     fun getCategoryWise(@Query("categories") category: String?): Call<List<NewsResponse?>>?

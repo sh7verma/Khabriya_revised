@@ -27,6 +27,7 @@ import com.sdei.khabriya.adapters.RecyclAdapter
 import com.sdei.khabriya.models.MenuResponse
 import com.sdei.khabriya.models.news.NewsResponse
 import com.sdei.khabriya.network.RetrofitClient
+import com.sdei.khabriya.utils.MySharedPreferences
 import com.sdei.khabriya.utils.Utilities
 import com.sdei.khabriya.utils.showAlertSnackBar
 import com.sdei.khabriya.utils.showToast
@@ -47,11 +48,11 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
     var mMenuList = ArrayList<MenuResponse>()
 
     private var mLayoutManager: LinearLayoutManager? = null
-    var adapter: RecyclAdapter? = null
+    var mNewsTitle = "Latest News"
 
+    var adapter: RecyclAdapter? = null
     var pageNo = 0
     var loadingMore = MutableLiveData<Boolean>()
-    var mNewsTitle = "Latest News"
     var mCategory_id = ""
     var LIST_TYPE = 0
     // 0  Latest news
@@ -65,7 +66,12 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
         getMenuList()
         getAllNews()
         initScrollListener()
-
+        mCategory_id = if(MySharedPreferences.getInstance(this@MainActivity).getString(MySharedPreferences.Key.CATEGORIES_CHOSEN).isNullOrBlank()){
+            ""
+        }else{
+            Log.i("MainActivity",""+MySharedPreferences.getInstance(this@MainActivity).getString(MySharedPreferences.Key.CATEGORIES_CHOSEN))
+            MySharedPreferences.getInstance(this@MainActivity).getString(MySharedPreferences.Key.CATEGORIES_CHOSEN)
+        }
         loadingMore.observe(this, Observer {
             if (it) {
                 if (pageNo > 1) {
@@ -107,8 +113,12 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                 )
             )
         }
+        edSearch.setOnTouchListener { v, event ->
+            startActivity(Intent(this@MainActivity,SearchActivity::class.java))
+            return@setOnTouchListener true
+        }
 
-        edSearch.setOnEditorActionListener { v, actionId, event ->
+        /*edSearch.setOnEditorActionListener { v, actionId, event ->
             if (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
                 if (edSearch.text.isNotEmpty()) {
                     LIST_TYPE = 2
@@ -121,32 +131,32 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                 getAllNews()
             }
             false
-        }
+        }*/
 
 
-        edSearch.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(
-                s: CharSequence?, start: Int,
-                before: Int, count: Int
-            ) {
-                if (count == 0) {
-                    LIST_TYPE = 0
-                    pageNo = 0
-                    swRefresh.isRefreshing = true
-
-                    mNewsList = ArrayList()
-                    getAllNews()
-                }
-            }
-        })
+//        edSearch.addTextChangedListener(object : TextWatcher {
+//            override fun afterTextChanged(s: Editable?) {
+//
+//            }
+//
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+//
+//            }
+//
+//            override fun onTextChanged(
+//                s: CharSequence?, start: Int,
+//                before: Int, count: Int
+//            ) {
+//                if (count == 0) {
+//                    LIST_TYPE = 0
+//                    pageNo = 0
+//                    swRefresh.isRefreshing = true
+//
+//                    mNewsList = ArrayList()
+//                    getAllNews()
+//                }
+//            }
+//        })
         recycler_view.setOnClickListener {
             if (mInterstitialAd.isLoaded) {
                 mInterstitialAd.show()

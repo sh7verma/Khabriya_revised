@@ -3,8 +3,10 @@ package com.sdei.khabriya.activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.sdei.khabriya.R
+import com.sdei.khabriya.utils.MySharedPreferences
 
 class SplashActivity : AppCompatActivity() {
 
@@ -12,9 +14,24 @@ class SplashActivity : AppCompatActivity() {
 
     private fun startTimer() {
         Handler().postDelayed({
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            if (MySharedPreferences.getInstance(this@SplashActivity)
+                    .getString(MySharedPreferences.Key.CATEGORIES_CHOSEN).isNullOrBlank()
+            ) {
+                val intent = Intent(this, PreferenceActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                Log.i(
+                    "MainActivity",
+                    "" + MySharedPreferences.getInstance(this@SplashActivity).getString(
+                        MySharedPreferences.Key.CATEGORIES_CHOSEN
+                    )
+                )
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
         }, SPLASH_DISPLAY_LENGTH)
     }
 
