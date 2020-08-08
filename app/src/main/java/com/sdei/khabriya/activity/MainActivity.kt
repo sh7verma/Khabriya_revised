@@ -59,18 +59,13 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
         setAdapter(mNewsTitle)
         getMenuList()
         initScrollListener()
-        mCategory_id = if (MySharedPreferences.getInstance(this@MainActivity)
-                .getString(MySharedPreferences.Key.CATEGORIES_CHOSEN).isNullOrBlank()
-        ) {
+
+        mCategory_id = if (MySharedPreferences.getInstance(this@MainActivity).getString(MySharedPreferences.Key.CATEGORIES_CHOSEN).isNullOrBlank()) {
             ""
         } else {
             LIST_TYPE = 1
-            Log.i("MainActivity",
-                "" + MySharedPreferences.getInstance(this@MainActivity)
-                    .getString(MySharedPreferences.Key.CATEGORIES_CHOSEN)
-            )
-            MySharedPreferences.getInstance(this@MainActivity)
-                .getString(MySharedPreferences.Key.CATEGORIES_CHOSEN)
+            Log.i("MainActivity","" + MySharedPreferences.getInstance(this@MainActivity).getString(MySharedPreferences.Key.CATEGORIES_CHOSEN))
+            MySharedPreferences.getInstance(this@MainActivity).getString(MySharedPreferences.Key.CATEGORIES_CHOSEN)
         }
         getAllNews()
 
@@ -135,30 +130,30 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
             false
         }*/
 
+        /*        edSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
 
-//        edSearch.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(s: Editable?) {
-//
-//            }
-//
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//
-//            }
-//
-//            override fun onTextChanged(
-//                s: CharSequence?, start: Int,
-//                before: Int, count: Int
-//            ) {
-//                if (count == 0) {
-//                    LIST_TYPE = 0
-//                    pageNo = 0
-//                    swRefresh.isRefreshing = true
-//
-//                    mNewsList = ArrayList()
-//                    getAllNews()
-//                }
-//            }
-//        })
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(
+                s: CharSequence?, start: Int,
+                before: Int, count: Int
+            ) {
+                if (count == 0) {
+                    LIST_TYPE = 0
+                    pageNo = 0
+                    swRefresh.isRefreshing = true
+
+                    mNewsList = ArrayList()
+                    getAllNews()
+                }
+            }
+        })*/
+
         recycler_view.setOnClickListener {
             if (mInterstitialAd.isLoaded) {
                 mInterstitialAd.show()
@@ -166,9 +161,12 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
         }
 
         swRefresh.setOnRefreshListener {
+            pageNo = 0
+            mNewsList = ArrayList()
             getMenuList()
             getAllNews()
         }
+
         swRefresh.isRefreshing = false
     }
 
@@ -199,10 +197,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                     Log.e("Menu error", "Unable to fetch menu")
                 }
 
-                override fun onResponse(
-                    call: Call<ArrayList<MenuResponse>>,
-                    response: Response<ArrayList<MenuResponse>>
-                ) {
+                override fun onResponse( call: Call<ArrayList<MenuResponse>>,response: Response<ArrayList<MenuResponse>>) {
                     mMenuList = response.body()!!
                     setMenuAdapter()
                 }

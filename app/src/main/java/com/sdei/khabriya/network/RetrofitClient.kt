@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
-//    const val BASE_URL = "https://app.pagalparrot.com/wp-json/wp/v2/"
+    //    const val BASE_URL = "https://app.pagalparrot.com/wp-json/wp/v2/"
     const val BASE_URL = "https://news.khabriya.in/wp-json/wp/v2/"
     private var retrofit: Retrofit? = null
     private var apiInterface: ApiInterface? = null
@@ -16,10 +16,10 @@ object RetrofitClient {
         get() {
             if (retrofit == null) {
                 retrofit = Retrofit.Builder()
-                        .baseUrl(BASE_URL)
-                        .client(provideOkHttpClient())
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build()
+                    .baseUrl(BASE_URL)
+                    .client(provideOkHttpClient())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
             }
 
             if (apiInterface == null) {
@@ -32,13 +32,12 @@ object RetrofitClient {
     //Creating OKHttpClient
     private fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .readTimeout(120, TimeUnit.SECONDS)
-                .connectTimeout(120, TimeUnit.SECONDS)
-                .build()
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .readTimeout(120, TimeUnit.SECONDS)
+            .connectTimeout(120, TimeUnit.SECONDS)
+            .cache(null)
+            .build()
     }
-
-
 
 
 }

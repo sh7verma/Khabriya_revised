@@ -79,6 +79,7 @@ public class DetailActivity extends AppCompatActivity {
 //    }
 
     void hitApi(String id) {
+//        id = "21952";
         RetrofitClient.INSTANCE.getInstance().getNotificationNews(id).enqueue(new Callback<NewsResponse>() {
             @Override
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
@@ -87,7 +88,7 @@ public class DetailActivity extends AppCompatActivity {
                         Utilities.extractLinks(m.getContent().getRendered());
                 ViewModel viewModel =
                         new ViewModel(
-                                m.getTitle().getRendered(), finalUrl, "",
+                                m.getTitle().getRendered(), url, "",
                                 "", "", "", "",
                                 m.getContent().getRendered(), m.getLink(), m.getDate()
                         );
@@ -152,6 +153,8 @@ public class DetailActivity extends AppCompatActivity {
                     .replace("/", "");
             hitApi(id);
         }
+
+//        hitApi("");
 
 //        mWebView.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
@@ -285,12 +288,12 @@ public class DetailActivity extends AppCompatActivity {
         }
 
 
-        if (getIntent().hasExtra("notification")) {
-            showWebView(getIntent().getStringExtra("notification"));
+//        if (getIntent().hasExtra("notification")) {
+//            showWebView(getIntent().getStringExtra("notification"));
 //            getCategoryNews(getIntent().getStringExtra("category"));
-        } else {
-            showWebView(content);
-        }
+//        } else {
+        showWebView(content);
+//        }
        /* WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
@@ -398,12 +401,12 @@ public class DetailActivity extends AppCompatActivity {
         mWebView.getSettings().setDomStorageEnabled(true);
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         mWebView.getSettings().setPluginState(WebSettings.PluginState.ON);
-        if (getIntent().hasExtra("notification")) {
-            mWebView.loadUrl(getIntent().getStringExtra("notification"));
-        } else {
+//        if (getIntent().hasExtra("notification")) {
+//            mWebView.loadUrl(getIntent().getStringExtra("notification"));
+//        } else {
 //            mWebView.loadDataWithBaseURL(null, "<html><head><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'><script async> src: url('file:///android_asset/fonts/insta.js'); <style>a{color:black; text-decoration:none}img{display: block;width: auto; height: auto!important; max-width: 100%;}iframe{display: inline;width: 100%!important;}figure.wp-caption.aligncenter {width: auto!important;}p{line-height: 25px}@font-face {font-family: \"regular\";src: url(\'file:///android_asset/fonts/regular.ttf\');}</style>" + content+ "</body></html>", "text/html", "UTF-8", null);
-            mWebView.loadDataWithBaseURL(null, "<html><head><script async defer src=\\\"https://platform.instagram.com/en_US/embeds.js\\\"></script><style>a{color:black; text-decoration:none}img{display: block;width: auto; height: auto!important; max-width: 100%;}iframe{display: inline;width: 100%!important;}figure.wp-caption.aligncenter {width: auto!important;}p{line-height: 25px}@font-face {font-family: \\\"regular\\\";src: url(\\'file:///android_asset/fonts/regular.ttf\\');}</style>" + content + "</body></html>", "text/html", "UTF-8", null);
-        }
+        mWebView.loadDataWithBaseURL(null, "<html><head><script async defer src=\\\"https://platform.instagram.com/en_US/embeds.js\\\"></script><style>a{color:black; text-decoration:none}img{display: block;width: auto; height: auto!important; max-width: 100%;}iframe{display: inline;width: 100%!important;}figure.wp-caption.aligncenter {width: auto!important;}p{line-height: 25px}@font-face {font-family: \\\"regular\\\";src: url(\\'file:///android_asset/fonts/regular.ttf\\');}</style>" + content + "</body></html>", "text/html", "UTF-8", null);
+//        }
         mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         mWebView.setWebViewClient(new MyBrowser());
 
