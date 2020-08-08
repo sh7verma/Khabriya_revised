@@ -12,8 +12,8 @@ import com.sdei.khabriya.R
 
 fun ImageView.loadImage(image: String?) {
     Glide.with(this).load(image).centerCrop()
-        .placeholder(R.mipmap.no_bg_logo)
-        .error(R.mipmap.no_bg_logo).into(this)
+        .placeholder(R.drawable.new_splas)
+        .error(R.drawable.new_splas).into(this)
 }
 
 fun showSnackBar(view: View, message: String) {

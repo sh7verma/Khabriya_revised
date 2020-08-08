@@ -11,7 +11,10 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdRequest
@@ -60,7 +63,11 @@ class RecyclAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
+        if(search){
+            return 1
+        }
         return when (position) {
+
             0 -> {
                 0
             }
@@ -82,9 +89,9 @@ class RecyclAdapter(
 //            if (url.isEmpty()) {
 //                holder.imageView.visibility = View.GONE
 //            } else {
-                holder.imageView.visibility = View.VISIBLE
+            holder.imageView.visibility = View.VISIBLE
 
-                holder.imageView.loadImage(url)
+            holder.imageView.loadImage(url)
 //
 //                ImageLoader.getInstance().displayImage(
 //                    url,
@@ -126,11 +133,11 @@ class RecyclAdapter(
             var url = ""
             //        url =  data.getLink();
             if (data != null) {
-                if(position ==3 || position==5){
+                if (position == 3 || position == 5) {
                     var adRequest = AdRequest.Builder().build();
                     (holder as NewsHolder).adView.loadAd(adRequest);
                     (holder as NewsHolder).adView.visibility = VISIBLE
-                }else{
+                } else {
                     (holder as NewsHolder).adView.visibility = GONE
                 }
 
@@ -198,7 +205,7 @@ class RecyclAdapter(
         var sharewhats: TextView
         var imageView: ImageView
         var card_view: CardView
-        var adView : AdView
+        var adView: AdView
 
         init {
             imageView =
@@ -208,15 +215,15 @@ class RecyclAdapter(
             card_view = itemView.findViewById(R.id.card_view)
             adView = itemView.findViewById(R.id.adViewNews)
             textView.typeface = mRegularTypeface
-           /* val screenWidth = Utilities.getScreenWidth(mContext) / 2
-            val calculatedHeight = (screenWidth / 1.56f).toInt()
-            imageView.requestLayout()
-            val layoutParams = RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                calculatedHeight
-            )
-            imageView.layoutParams = layoutParams
-            imageView.requestLayout()*/
+            /* val screenWidth = Utilities.getScreenWidth(mContext) / 2
+             val calculatedHeight = (screenWidth / 1.56f).toInt()
+             imageView.requestLayout()
+             val layoutParams = RelativeLayout.LayoutParams(
+                 RelativeLayout.LayoutParams.MATCH_PARENT,
+                 calculatedHeight
+             )
+             imageView.layoutParams = layoutParams
+             imageView.requestLayout()*/
         }
     }
 
@@ -224,7 +231,7 @@ class RecyclAdapter(
 //        val html = Html.fromHtml("Download app on your phone for latest news in your language :  <a>https://khabriya.in</a>").toString()
         val html = Html.fromHtml(
             "I found this news on khabriya app :$message\n Download Khabriya app to read the latest news in your language."
-             )
+        )
         val whatsappIntent = Intent(Intent.ACTION_SEND)
         whatsappIntent.type = "text/html"
         whatsappIntent.setPackage("com.whatsapp")
@@ -243,14 +250,14 @@ class RecyclAdapter(
         var sharewhats: TextView
         var newsHeader: TextView
         var headlinesTxt: TextView
-        var adView1:AdView;
+        var adView1: AdView;
         var parnetLayout: LinearLayout
 
         init {
             imageView = itemView.findViewById(R.id.cover_imageView)
             category = itemView.findViewById(R.id.category_name_textview)
             newsHeader = itemView.findViewById(R.id.name_textview)
-            adView1 = itemView . findViewById (R.id.adView1);
+            adView1 = itemView.findViewById(R.id.adView1);
             parnetLayout =
                 itemView.findViewById<View>(R.id.parentLayout) as LinearLayout
             headlinesTxt = itemView.findViewById(R.id.headlinesTxt)

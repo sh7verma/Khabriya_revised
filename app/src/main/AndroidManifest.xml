@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.LanguageActivity"></activity>
-        <activity android:name=".activity.TvStreamingActivity" />
+        <activity android:name=".activity.TvStreamingActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            />
         <activity android:name=".activity.ChannelListActivity" />
         <activity android:name=".activity.SelectLanguageTvActivity" />
         <activity android:name=".activity.MainActivity" />

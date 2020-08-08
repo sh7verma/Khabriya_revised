@@ -15,7 +15,6 @@ import com.sdei.khabriya.network.RetrofitClient
 import com.sdei.khabriya.utils.MySharedPreferences
 import com.sdei.khabriya.utils.showAlertSnackBar
 import kotlinx.android.synthetic.main.activity_genre_preference.*
-import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,23 +23,31 @@ import retrofit2.Response
 class PreferenceActivity : AppCompatActivity() {
 
 
-    private var selectedCats: String? =""
+    private var selectedCats: String? = ""
     private var customAdapter: CustomAdapter? = null
     private var mMenuList: ArrayList<MenuPreferenceResponse?> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_genre_preference)
+        selectedCats = MySharedPreferences.getInstance(this@PreferenceActivity)
+            .getString(MySharedPreferences.Key.CATEGORIES_CHOSEN, selectedCats)
+
         getMenuList()
+
         savePrefs.setOnClickListener {
-            if(selectedCats?.isNotEmpty()!!){
-                if (selectedCats != null && (selectedCats?.length!! > 0) && selectedCats?.get(selectedCats?.length!! - 1) == ',') {
+            if (selectedCats?.isNotEmpty()!!) {
+                if (selectedCats != null && (selectedCats?.length!! > 0) && selectedCats?.get(
+                        selectedCats?.length!! - 1
+                    ) == ','
+                ) {
                     selectedCats = selectedCats?.substring(0, selectedCats?.length!! - 1);
                 }
                 Log.i("PreferenceActivity", "Selected caterggoreis$selectedCats")
-                MySharedPreferences.getInstance(this@PreferenceActivity).put(MySharedPreferences.Key.CATEGORIES_CHOSEN,selectedCats)
+                MySharedPreferences.getInstance(this@PreferenceActivity)
+                    .put(MySharedPreferences.Key.CATEGORIES_CHOSEN, selectedCats)
                 startActivity(Intent(this@PreferenceActivity, MainActivity::class.java))
-                finish()
+                finishAffinity()
             }
         }
     }
@@ -65,19 +72,24 @@ class PreferenceActivity : AppCompatActivity() {
                     ) {
                         pref_loader.visibility = GONE
                         mMenuList = response.body()!!
-                        for(i in 0 until mMenuList.size){
+                        for (i in 0 until mMenuList.size) {
                             mMenuList[i]?.selected = false
                         }
                         setMenuAdapter()
                     }
                 })
         } else {
-//            showAlertSnackBar(edSearch, getString(R.string.error_internet))
+            showAlertSnackBar(pref_cate_grid, getString(R.string.error_internet))
         }
 
     }
 
     private fun setMenuAdapter() {
+        for (i in 0 until mMenuList.size) {
+            if (selectedCats!!.split(",").contains(mMenuList[i]!!.object_id)) {
+                mMenuList[i]!!.selected = true
+            }
+        }
         customAdapter = CustomAdapter(this, mMenuList)
         pref_cate_grid.adapter = customAdapter
         pref_cate_grid.layoutManager = GridLayoutManager(

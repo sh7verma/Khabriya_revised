@@ -19,7 +19,12 @@ class TvStreamingActivity : AppCompatActivity() {
         }
         andExoPlayerView.setSource(intent.getStringExtra("url"))
         andExoPlayerView.setShowFullScreen(true)
+    }
 
+
+    override fun onPause() {
+        super.onPause()
+        andExoPlayerView.pausePlayer()
     }
 
 }

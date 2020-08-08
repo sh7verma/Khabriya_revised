@@ -7,7 +7,6 @@ import android.text.Html;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -17,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
@@ -66,6 +64,55 @@ public class DetailActivity extends AppCompatActivity {
     private TextView dateTv;
     private ProgressBar mProgressLayout;
 
+//    {
+//            "google.delivered_priority": "normal",
+//            "google.sent_time": 1596738319747,
+//            "google.ttl": 259200,
+//            "google.original_priority": "normal",
+//            "custom": "{\"u\":\"https:\\\/\\\/news.khabriya.in\\\/news\\\/19367\\\/\",\"i\":\"d009d657-1fe0-4914-a953-098abc897477\"}",
+//            "from": "272267775926",
+//            "alert": "तेलंगाना का नया सचिवालय डिजाइन मस्जिद की तरह दिखता है: भाजपा",
+//            "title": "Khabriya",
+//            "google.message_id": "0:1596738319765956%26e33c29f9fd7ecd",
+//            "google.c.sender.id": "272267775926",
+//            "androidNotificationId": -281260072
+//    }
+
+    void hitApi(String id) {
+        RetrofitClient.INSTANCE.getInstance().getNotificationNews(id).enqueue(new Callback<NewsResponse>() {
+            @Override
+            public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
+                NewsResponse m = response.body();
+                url =
+                        Utilities.extractLinks(m.getContent().getRendered());
+                ViewModel viewModel =
+                        new ViewModel(
+                                m.getTitle().getRendered(), finalUrl, "",
+                                "", "", "", "",
+                                m.getContent().getRendered(), m.getLink(), m.getDate()
+                        );
+
+                String title = viewModel.getTitle();
+                link = viewModel.getLink();
+                String coverImage = viewModel.getImage();
+                String content = viewModel.getContent();
+                String date = viewModel.getDate();
+                String name = viewModel.getAuthorName();
+                m.getCategories().get(0);
+                category = m.getCategories().get(0).toString();
+                loadContent(link, coverImage, title, content, date, category, name);
+                getCategoryNews(category);
+            }
+
+            @Override
+            public void onFailure(Call<NewsResponse> call, Throwable t) {
+//                Toast.makeText(this,t.getMessage().toString(),Toast.LENGTH_LONG).show();
+                Log.d("MODEL", t.getMessage());
+
+            }
+        });
+    }
+
     @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,12 +145,20 @@ public class DetailActivity extends AppCompatActivity {
         scrollTop = findViewById(R.id.scrollTop);
         mNestedScrollView = findViewById(R.id.scroll);
 
-        mWebView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
+        if (getIntent().hasExtra("customModel")) {
+            String link = getIntent().getStringExtra("customModel");
+            String id = getIntent().getStringExtra("customModel")
+                    .replace("https://news.khabriya.in/news/", "")
+                    .replace("/", "");
+            hitApi(id);
+        }
+
+//        mWebView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return true;
+//            }
+//        });
 
         scrollTop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,16 +166,18 @@ public class DetailActivity extends AppCompatActivity {
                 mNestedScrollView.fullScroll(View.FOCUS_UP);
             }
         });
+        if (!getIntent().hasExtra("notification")) {
+            category = getIntent().getStringExtra("category");
 
-        category = getIntent().getStringExtra("category");
-        getCategoryNews(category);
+            getCategoryNews(category);
+        }
         backTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(getIntent().hasExtra("notification")){
-                    startActivity(new Intent(DetailActivity.this,MainActivity.class));
+                if (getIntent().hasExtra("notification")) {
+                    startActivity(new Intent(DetailActivity.this, MainActivity.class));
                     finish();
-                }else{
+                } else {
                     onBackPressed();
                 }
             }
@@ -141,13 +198,12 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finalUrl = Utilities.extractLinks(mNewsList.get(1).getContent().getRendered());
-
                 model = new ViewModel(mNewsList.get(1).getTitle().getRendered(), finalUrl, "", "", "", "", "",
                         mNewsList.get(1).getContent().getRendered(), mNewsList.get(1).getLink(), mNewsList.get(1).getDate());
                 openDetailActivity(model);
-
             }
         });
+
         alsoLayout2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -168,18 +224,18 @@ public class DetailActivity extends AppCompatActivity {
                 openDetailActivity(model);
             }
         });
+        if (!getIntent().hasExtra("notification")) {
+            link = getIntent().getStringExtra(Utilities.EXTRA_LINK);
+            String coverImage = getIntent().getStringExtra(Utilities.EXTRA_COVER_IMAGE);
+            String title = getIntent().getStringExtra(Utilities.TITLE);
+            String content = getIntent().getStringExtra(Utilities.CONTENT);
+            String date = getIntent().getStringExtra(Utilities.DATE);
+            category = getIntent().getStringExtra("category");
+            String name = getIntent().getStringExtra("name");
+            loadContent(link, coverImage, title, content, date, category, name);
+        }
 
-        link = getIntent().getStringExtra(Utilities.EXTRA_LINK);
-        String coverImage = getIntent().getStringExtra(Utilities.EXTRA_COVER_IMAGE);
-        String title = getIntent().getStringExtra(Utilities.TITLE);
-        String content = getIntent().getStringExtra(Utilities.CONTENT);
-        String date = getIntent().getStringExtra(Utilities.DATE);
-        category = getIntent().getStringExtra("category");
-        String name = getIntent().getStringExtra("name");
-        loadContent(link, coverImage, title, content, date, category, name);
-
-
-        String shareText="Download app on your phone for latest news in your language : https://khabriya.in";
+        String shareText = "Download app on your phone for latest news in your language : https://khabriya.in";
 
         mActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -201,19 +257,19 @@ public class DetailActivity extends AppCompatActivity {
     void loadContent(String link, String coverImage, String title, String content, String date, String category, String name) {
 
         ImageLoader.getInstance().displayImage(coverImage, ivTop, Utilities.setDisplayOptions());
-        if(title!=null){
+        if (title != null) {
             title = String.valueOf(new StringBuffer(title.replaceAll("&#8217;", "'")));
             tvTitle.setText(title);
         }
-       if(name!=null){
-           postedByTv.setText(name);
-       }
+        if (name != null) {
+            postedByTv.setText(name);
+        }
 
         //Adview
         AdRequest adRequest = new AdRequest.Builder().build();
         adView1.loadAd(adRequest);
 
-        if(date!=null){
+        if (date != null) {
             String[] dateValue = date.split("T");
             String dateString = dateValue[0];
             DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -229,12 +285,10 @@ public class DetailActivity extends AppCompatActivity {
         }
 
 
-
-
-        if(getIntent().hasExtra("notification")){
+        if (getIntent().hasExtra("notification")) {
             showWebView(getIntent().getStringExtra("notification"));
-            getCategoryNews(getIntent().getStringExtra("category"));
-        }else{
+//            getCategoryNews(getIntent().getStringExtra("category"));
+        } else {
             showWebView(content);
         }
        /* WebSettings webSettings = mWebView.getSettings();
@@ -344,10 +398,11 @@ public class DetailActivity extends AppCompatActivity {
         mWebView.getSettings().setDomStorageEnabled(true);
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         mWebView.getSettings().setPluginState(WebSettings.PluginState.ON);
-        if(getIntent().hasExtra("notification")){
+        if (getIntent().hasExtra("notification")) {
             mWebView.loadUrl(getIntent().getStringExtra("notification"));
-        }else{
-            mWebView.loadDataWithBaseURL(null, "<style>a{color:black; text-decoration:none}img{display: inline;width: auto; height: auto;max-width: 100%;}iframe{display: inline;height: auto;max-width: 100%;}p{line-height: 25px}@font-face {font-family: \"regular\";src: url(\'file:///android_asset/fonts/regular.ttf\');}</style>" + content, "text/html", "UTF-8", null);
+        } else {
+//            mWebView.loadDataWithBaseURL(null, "<html><head><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'><script async> src: url('file:///android_asset/fonts/insta.js'); <style>a{color:black; text-decoration:none}img{display: block;width: auto; height: auto!important; max-width: 100%;}iframe{display: inline;width: 100%!important;}figure.wp-caption.aligncenter {width: auto!important;}p{line-height: 25px}@font-face {font-family: \"regular\";src: url(\'file:///android_asset/fonts/regular.ttf\');}</style>" + content+ "</body></html>", "text/html", "UTF-8", null);
+            mWebView.loadDataWithBaseURL(null, "<html><head><script async defer src=\\\"https://platform.instagram.com/en_US/embeds.js\\\"></script><style>a{color:black; text-decoration:none}img{display: block;width: auto; height: auto!important; max-width: 100%;}iframe{display: inline;width: 100%!important;}figure.wp-caption.aligncenter {width: auto!important;}p{line-height: 25px}@font-face {font-family: \\\"regular\\\";src: url(\\'file:///android_asset/fonts/regular.ttf\\');}</style>" + content + "</body></html>", "text/html", "UTF-8", null);
         }
         mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         mWebView.setWebViewClient(new MyBrowser());

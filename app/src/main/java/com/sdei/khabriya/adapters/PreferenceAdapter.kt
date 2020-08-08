@@ -34,20 +34,29 @@ class CustomAdapter(ctx: Context, var imageModelArrayList: ArrayList<MenuPrefere
 
         // holder.checkBox.setTag(R.integer.btnplusview, convertView);
         holder.checkBox.tag = position
+
+        if(imageModelArrayList[position]?.selected!!){
+            tempStr += imageModelArrayList[position]?.object_id.toString()+","
+            Log.i("PreferenceAdapter","Added"+tempStr)
+        }
+
         holder.checkBox.setOnClickListener {
             val pos = holder.checkBox.tag as Int
             imageModelArrayList[pos]?.selected = !imageModelArrayList[pos]?.selected!!
+
             if(imageModelArrayList[pos]?.selected!!){
-                    tempStr += imageModelArrayList[pos]?.id.toString()+","
+                    tempStr += imageModelArrayList[pos]?.object_id.toString()+","
                 Log.i("PreferenceAdapter","Added"+tempStr)
                 categoryListner?.invoke(tempStr)
             }else{
-                if (tempStr.contains(imageModelArrayList[pos]?.id.toString())){
-                   tempStr = tempStr.replace(","+imageModelArrayList[pos]?.id.toString()+",","")
+
+                if (tempStr.contains(imageModelArrayList[pos]?.object_id.toString())){
+                   tempStr = tempStr.replace(","+imageModelArrayList[pos]?.object_id.toString()+",","")
                 }
                 Log.i("PreferenceAdapter","Removed"+tempStr)
                 categoryListner?.invoke(tempStr)
             }
+            notifyDataSetChanged()
         }
     }
 

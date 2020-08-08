@@ -6,10 +6,7 @@ import com.sdei.khabriya.models.preference.MenuPreferenceResponse
 import com.sdei.khabriya.models.tv.ChannelModel
 import com.sdei.khabriya.models.tv.TvLanguageModel
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 interface ApiInterface {
@@ -38,6 +35,9 @@ interface ApiInterface {
 
     @GET("https://news.khabriya.in/wp-json/wp/v2/posts")
     fun getCategoryWise(@Query("categories") category: String?): Call<List<NewsResponse?>>?
+
+    @GET("https://news.khabriya.in/wp-json/wp/v2/posts/{user_id}/")
+    fun getNotificationNews(@Path("user_id") id: String?): Call<NewsResponse?>?
 
     @Headers("Secret-Key: AJT_Lbim_0f6bd8a808ea3e9996b3aee1900aa2e8")
     @GET("https://tv.khabriya.in/admin/list-lagnuage.php")

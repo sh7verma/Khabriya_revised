@@ -2,14 +2,9 @@ package com.sdei.khabriya.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
-import android.view.KeyEvent
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.MutableLiveData
@@ -32,7 +27,6 @@ import com.sdei.khabriya.utils.Utilities
 import com.sdei.khabriya.utils.showAlertSnackBar
 import com.sdei.khabriya.utils.showToast
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.progress
 import kotlinx.android.synthetic.main.layout_bottom.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -48,7 +42,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
     var mMenuList = ArrayList<MenuResponse>()
 
     private var mLayoutManager: LinearLayoutManager? = null
-    var mNewsTitle = "Latest News"
+    var mNewsTitle = "My News Feed"
 
     var adapter: RecyclAdapter? = null
     var pageNo = 0
@@ -64,14 +58,22 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
         setContentView(R.layout.activity_main)
         setAdapter(mNewsTitle)
         getMenuList()
-        getAllNews()
         initScrollListener()
-        mCategory_id = if(MySharedPreferences.getInstance(this@MainActivity).getString(MySharedPreferences.Key.CATEGORIES_CHOSEN).isNullOrBlank()){
+        mCategory_id = if (MySharedPreferences.getInstance(this@MainActivity)
+                .getString(MySharedPreferences.Key.CATEGORIES_CHOSEN).isNullOrBlank()
+        ) {
             ""
-        }else{
-            Log.i("MainActivity",""+MySharedPreferences.getInstance(this@MainActivity).getString(MySharedPreferences.Key.CATEGORIES_CHOSEN))
-            MySharedPreferences.getInstance(this@MainActivity).getString(MySharedPreferences.Key.CATEGORIES_CHOSEN)
+        } else {
+            LIST_TYPE = 1
+            Log.i("MainActivity",
+                "" + MySharedPreferences.getInstance(this@MainActivity)
+                    .getString(MySharedPreferences.Key.CATEGORIES_CHOSEN)
+            )
+            MySharedPreferences.getInstance(this@MainActivity)
+                .getString(MySharedPreferences.Key.CATEGORIES_CHOSEN)
         }
+        getAllNews()
+
         loadingMore.observe(this, Observer {
             if (it) {
                 if (pageNo > 1) {
@@ -90,7 +92,7 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
 
         txtLatest.setOnClickListener {
             drawer.closeDrawer(Gravity.LEFT)
-            LIST_TYPE = 0
+            LIST_TYPE = 1
             pageNo = 0
             mNewsTitle = txtLatest.text.toString()
             mNewsList = ArrayList()
@@ -113,9 +115,9 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
                 )
             )
         }
-        edSearch.setOnTouchListener { v, event ->
-            startActivity(Intent(this@MainActivity,SearchActivity::class.java))
-            return@setOnTouchListener true
+
+        edSearch.setOnClickListener {
+            startActivity(Intent(this@MainActivity, SearchActivity::class.java))
         }
 
         /*edSearch.setOnEditorActionListener { v, actionId, event ->

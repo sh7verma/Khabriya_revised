@@ -1,5 +1,6 @@
 package com.sdei.khabriya.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ import com.sdei.khabriya.utils.Utilities;
 public class SettingActivity extends AppCompatActivity {
 
     TextView versionTv;
+    RelativeLayout txtPrefe;
     Switch notificationSwitch;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -44,19 +47,19 @@ public class SettingActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if (!preferences.getBoolean(Utilities.ENABLE_NOTI,false)){
+        if (!preferences.getBoolean(Utilities.ENABLE_NOTI, false)) {
             notificationSwitch.setChecked(true);
         } else {
             notificationSwitch.setChecked(false);
         }
 
         notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked){
-                editor.putBoolean(Utilities.ENABLE_NOTI,false).commit();
-                Log.e("noti","true");
+            if (isChecked) {
+                editor.putBoolean(Utilities.ENABLE_NOTI, false).commit();
+                Log.e("noti", "true");
             } else {
-                editor.putBoolean(Utilities.ENABLE_NOTI,true).commit();
-                Log.e("noti","false");
+                editor.putBoolean(Utilities.ENABLE_NOTI, true).commit();
+                Log.e("noti", "false");
             }
         });
 
@@ -65,6 +68,11 @@ public class SettingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 finish();
             }
+        });
+
+        txtPrefe.setOnClickListener(v -> {
+            Intent intent = new Intent(this, PreferenceActivity.class);
+            startActivity(intent);
         });
 
     }
@@ -78,8 +86,9 @@ public class SettingActivity extends AppCompatActivity {
     private void setIds() {
         versionTv = (TextView) findViewById(R.id.version_tv);
         notificationSwitch = (Switch) findViewById(R.id.notification_switch);
+        txtPrefe = (RelativeLayout) findViewById(R.id.txtPrefe);
         backImg = (ImageView) findViewById(R.id.back_img);
-        preferences = getSharedPreferences(Utilities.PREFS,MODE_PRIVATE);
+        preferences = getSharedPreferences(Utilities.PREFS, MODE_PRIVATE);
         editor = preferences.edit();
     }
 

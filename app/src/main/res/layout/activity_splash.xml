@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/splash_iv"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_120sdp"
             android:fontFamily="@font/bold"
             android:gravity="bottom"
             android:text="Made in India"

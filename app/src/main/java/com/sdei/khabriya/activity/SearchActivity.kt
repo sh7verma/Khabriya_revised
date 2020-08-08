@@ -2,11 +2,14 @@ package com.sdei.khabriya.activity
 
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sdei.khabriya.AppApplication
 import com.sdei.khabriya.R
 import com.sdei.khabriya.adapters.RecyclAdapter
@@ -16,20 +19,17 @@ import com.sdei.khabriya.utils.MySharedPreferences
 import com.sdei.khabriya.utils.Utilities
 import com.sdei.khabriya.utils.showAlertSnackBar
 import com.sdei.khabriya.utils.showToast
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.android.synthetic.main.activity_search.txtError
-import kotlinx.android.synthetic.main.activity_search.txtSearchTitle
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class SearchActivity : AppCompatActivity(){
+class SearchActivity : AppCompatActivity() {
     private lateinit var mLayoutManager: LinearLayoutManager
     private var queryString: String? = ""
     var mNewsList = ArrayList<NewsResponse>()
-    private var pageNo: Int=0
+    private var pageNo: Int = 0
     var LIST_TYPE = 0
     var loadingMore = MutableLiveData<Boolean>()
     var mCategory_id = ""
@@ -41,34 +41,54 @@ class SearchActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        mCategory_id = if(MySharedPreferences.getInstance(this@SearchActivity).getString(
-                MySharedPreferences.Key.CATEGORIES_CHOSEN).isNullOrBlank()){
+        mCategory_id = if (MySharedPreferences.getInstance(this@SearchActivity).getString(
+                MySharedPreferences.Key.CATEGORIES_CHOSEN
+            ).isNullOrBlank()
+        ) {
             ""
-        }else{
-            Log.i("MainActivity",""+ MySharedPreferences.getInstance(this@SearchActivity).getString(
-                MySharedPreferences.Key.CATEGORIES_CHOSEN))
-            MySharedPreferences.getInstance(this@SearchActivity).getString(MySharedPreferences.Key.CATEGORIES_CHOSEN)
+        } else {
+            Log.i(
+                "MainActivity", "" + MySharedPreferences.getInstance(this@SearchActivity).getString(
+                    MySharedPreferences.Key.CATEGORIES_CHOSEN
+                )
+            )
+            MySharedPreferences.getInstance(this@SearchActivity)
+                .getString(MySharedPreferences.Key.CATEGORIES_CHOSEN)
         }
-        searchView.isIconified = false;
         setAdapter("")
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                queryString = query
-                LIST_TYPE = if (query?.isNotEmpty()!!) {
-                    2
+        initScrollListener()
+
+        edSearch.setOnEditorActionListener { v, actionId, event ->
+            if (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
+                if (edSearch.text.isNotEmpty()) {
+                    LIST_TYPE = 2
                 } else {
-                    0
+                    LIST_TYPE = 0
                 }
                 pageNo = 0
                 mNewsList = ArrayList()
-                searchView.isIconified = true
+                loadingMore.value = true
                 getAllNews()
-                return false
             }
+            false
+        }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-//                adapter.getFilter().filter(newText)
-                return false
+        imgClose.setOnClickListener {
+            finish()
+        }
+
+        loadingMore.observe(this, Observer {
+            if (it) {
+                if (pageNo > 1) {
+                    progress.visibility = View.VISIBLE
+                    progressSearch.visibility = View.GONE
+                } else {
+                    progress.visibility = View.GONE
+                    progressSearch.visibility = View.VISIBLE
+                }
+            } else {
+                progress.visibility = View.GONE
+                progressSearch.visibility = View.GONE
             }
         })
 
@@ -78,9 +98,11 @@ class SearchActivity : AppCompatActivity(){
         if (AppApplication.hasNetwork()) {
             pageNo += 1
             if (pageNo <= 1) {
-                progressSearch.visibility = View.GONE
-            } else {
+                progress.visibility = View.GONE
                 progressSearch.visibility = View.VISIBLE
+            } else {
+                progress.visibility = View.VISIBLE
+                progressSearch.visibility = View.GONE
             }
             when (LIST_TYPE) {
                 0 -> {
@@ -127,33 +149,32 @@ class SearchActivity : AppCompatActivity(){
                 }
                 2 -> {
                     txtSearchTitle.visibility = View.VISIBLE
-                    txtSearchTitle.text = "Search Result for '" + queryString + "'"
+                    txtSearchTitle.text = "Search Result for '" + edSearch.text.toString() + "'"
 
                     RetrofitClient.instance?.getSearch(
-                        queryString,
+                        edSearch.text.toString(),
                         pageNo.toString()
-                    )
-                        ?.enqueue(object : Callback<List<NewsResponse?>?> {
-                            override fun onFailure(call: Call<List<NewsResponse?>?>, t: Throwable) {
-                            }
+                    )?.enqueue(object : Callback<List<NewsResponse?>?> {
+                        override fun onFailure(call: Call<List<NewsResponse?>?>, t: Throwable) {
+                        }
 
-                            override fun onResponse(
-                                call: Call<List<NewsResponse?>?>,
-                                response: Response<List<NewsResponse?>?>
-                            ) {
-                                try {
-                                    val temp = response.body() as ArrayList<NewsResponse>
-                                    mNewsList.addAll(temp)
-                                } catch (e: Exception) {
-                                    showToast(getString(R.string.error_no_stories))
-                                }
-                                notifyAdapter()
+                        override fun onResponse(
+                            call: Call<List<NewsResponse?>?>,
+                            response: Response<List<NewsResponse?>?>
+                        ) {
+                            try {
+                                val temp = response.body() as ArrayList<NewsResponse>
+                                mNewsList.addAll(temp)
+                            } catch (e: Exception) {
+                                showToast(getString(R.string.error_no_stories))
                             }
-                        })
+                            notifyAdapter()
+                        }
+                    })
                 }
             }
         } else {
-            showAlertSnackBar(searchView, getString(R.string.error_internet))
+            showAlertSnackBar(edSearch, getString(R.string.error_internet))
             notifyAdapter()
         }
 
@@ -181,17 +202,31 @@ class SearchActivity : AppCompatActivity(){
             this@SearchActivity,
             title,
             title,
-            false
+            true
         )
         news_recycler_view.adapter = adapter
     }
 
-
-    override fun onBackPressed() {
-        if(searchView.isIconified){
-            searchView.isIconified = true
-        }
-        super.onBackPressed()
+    private fun initScrollListener() {
+        news_recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val linearLayoutManager =
+                    recyclerView.layoutManager as LinearLayoutManager?
+                if (AppApplication.hasNetwork()) {
+                    if (!loadingMore.value!!) {
+                        if (mNewsList.isNotEmpty()) {
+                            if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == mNewsList.size - 1) {
+                                //bottom of list!
+                                getAllNews()
+                                loadingMore.value = true
+                            }
+                        }
+                    }
+                }
+            }
+        })
     }
+
 
 }
