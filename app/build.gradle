@@ -11,8 +11,8 @@ android {
         applicationId "com.sdei.khabriya"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         manifestPlaceholders = [
                 onesignal_app_id: 'ce7f04ce-9d5c-46d9-bbc0-580764b9071d',
                 // Project number pulled from dashboard, local value is ignored.

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -88,6 +89,8 @@ class SettingActivity : AppCompatActivity() {
             intent.type = "message/rfc822"
             intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("hello@khabriya.in"))
             intent.putExtra(Intent.EXTRA_SUBJECT, "Channel not working")
+
+
 
             try {
                 startActivity(Intent.createChooser(intent, "Send mail..."))

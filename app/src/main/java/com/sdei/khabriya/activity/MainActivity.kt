@@ -92,7 +92,13 @@ class MainActivity : AppCompatActivity(), MenuAdapter.MenuItemClick {
             mNewsTitle = txtLatest.text.toString()
             mNewsList = ArrayList()
             swRefresh.isRefreshing = true
-
+            mCategory_id = if (MySharedPreferences.getInstance(this@MainActivity).getString(MySharedPreferences.Key.CATEGORIES_CHOSEN).isNullOrBlank()) {
+                ""
+            } else {
+                LIST_TYPE = 1
+                Log.i("MainActivity","" + MySharedPreferences.getInstance(this@MainActivity).getString(MySharedPreferences.Key.CATEGORIES_CHOSEN))
+                MySharedPreferences.getInstance(this@MainActivity).getString(MySharedPreferences.Key.CATEGORIES_CHOSEN)
+            }
             getAllNews()
         }
 

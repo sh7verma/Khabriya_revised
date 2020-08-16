@@ -238,7 +238,8 @@ public class DetailActivity extends AppCompatActivity {
             loadContent(link, coverImage, title, content, date, category, name);
         }
 
-        String shareText = "Download app on your phone for latest news in your language : https://khabriya.in";
+        String shareText =
+                "I found this news on khabriya app ;"+link+"\n Download Khabriya app to read the latest news in your language.";
 
         mActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
